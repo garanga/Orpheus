@@ -32,6 +32,7 @@
 #include "ConcentratedLoad.hpp"
 #include "Job.hpp"
 #include "Solver.hpp"
+#include "LinearSolver.hpp"
 #include "SymbolicConstants.hpp"
 #include "Odb.hpp"
 #include "OdbStep.hpp"

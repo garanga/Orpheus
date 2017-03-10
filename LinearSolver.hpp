@@ -16,12 +16,12 @@ class Odb;
 
 #include "Eigen/Sparse"
 
-class Solver
+class LinearSolver
 {
 
 public:
 
-	Solver(Model*, Odb*);
+	LinearSolver(Model*, Odb*);
 
 	void solve();
 
