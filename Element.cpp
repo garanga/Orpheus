@@ -11,24 +11,24 @@
 
 Element::Element(int myId, int* myConnectivity, ElementType* myType)
 {
-	mId = myId;
-	mConnectivity = myConnectivity;
-	mType = myType;
+    mId = myId;
+    mConnectivity = myConnectivity;
+    mType = myType;
 }
 
 int Element::id() const
 {
-	return mId;
+    return mId;
 }
 
 int* Element::getConnect() const
 {
-	return mConnectivity;
+    return mConnectivity;
 }
 
 ElementType* Element::type() const
 {
-	return mType;
+    return mType;
 }
 
 
