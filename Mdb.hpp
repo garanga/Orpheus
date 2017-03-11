@@ -17,36 +17,22 @@ class Job;
 
 class Mdb
 {
-
 public:
 
-	Mdb();
-
+    Mdb();
    ~Mdb();
 
-	Model*
-	getModel(int No) const;
+    Model* getModel(int No) const;
+    Model* getModel(std::string name) const;
+    Job*   getJob(int No) const;
+    Job*   getJob(std::string name) const;
 
-	Model*
-	getModel(std::string name) const;
-
-	Job*
-	getJob(int No) const;
-
-	Job*
-	getJob(std::string name) const;
-
-	Model*
-	createModel(std::string myName);
-
-	Job*
-	createJob(std::string name, Model* model);
+    Model* createModel(std::string myName);
+    Job*   createJob(std::string name, Model* model);
 
 private:
-
-	std::vector<Model*>	models_;
-	std::vector<Job*>   jobs_;
-
+    std::vector<Model*> mModels;
+    std::vector<Job*>   mJobs;
 };
 
 #endif /* MDB_HPP_ */

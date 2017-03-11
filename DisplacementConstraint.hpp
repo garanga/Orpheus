@@ -17,14 +17,12 @@ enum class DisplacementConstraintType;
 
 class DisplacementConstraint : public Constraint
 {
-
 public:
-	// Specialized constructor
-	DisplacementConstraint(std::string myName, std::vector<int> myRegion, DisplacementConstraintType myType, double* myValue);
+    // Specialized constructor
+    DisplacementConstraint(std::string myName, std::vector<int> myRegion, DisplacementConstraintType myType, double* myValue);
 
-	// Virtual destructor
-	virtual ~DisplacementConstraint();
-
+    // Virtual destructor
+    virtual ~DisplacementConstraint();
 };
 
 

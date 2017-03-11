@@ -22,11 +22,11 @@ ElementType::~ElementType()
 std::string
 ElementType::getName() const
 {
-	return name_;
+    return name_;
 }
 
 int
 ElementType::getNodesNum() const
 {
-	return nodesNum_;
+    return nodesNum_;
 }

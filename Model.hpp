@@ -20,46 +20,38 @@ class StaticStep;
 
 class Model
 {
-
 public:
 
-	std::vector <Body*>       bodies;
-	std::vector <Part*>       parts;
-	std::vector <Material*>   materials;
-	std::vector <StaticStep*> steps;
+    std::vector <Body*>       bodies;
+    std::vector <Part*>       parts;
+    std::vector <Material*>   materials;
+    std::vector <StaticStep*> steps;
 
-	//! Specialized constructor
-	Model(std::string name);
-
+    //! Specialized constructor
+    Model(std::string name);
    ~Model();
 
-	std::string
-	getName() const;
+    std::string getName() const;
+    Body*       getBody(std::string);
+    Part*       getPart(std::string);
+    Material*   getMaterial(std::string);
+    StaticStep* getStaticStep(std::string);
 
-	//! A method for creating a Body object
-	Body*
-	createBody(std::string name);
 
-	//! A method for creating a Part object
-	Part*
-	createPart(std::string name);
+    Body*     createBody(std::string name); //! A method for creating a Body object
+    Part*     createPart(std::string name); //! A method for creating a Part object
+    Material* createIsotropic(std::string name, double young, double poisson); //! A method for creating a Material object
 
-	//! A method for creating a Material object
-	Material*
-	createIsotropic(std::string name, double young, double poisson);
+    void setPartMaterial(std::string, std::string);
 
-	//! A method for creating a StaticStep object
-	StaticStep*
-	createStaticStep(std::string name,
-                     double timeBegin,
-					 double timeEnd,
-					 double timeIncrement,
-					 double loadFactorBegin,
-					 double loadFactorEnd);
-
+    StaticStep* createStaticStep(std::string name, //! A method for creating a StaticStep object
+                                 double timeBegin,
+                                 double timeEnd,
+                                 double timeIncrement,
+                                 double loadFactorBegin,
+                                 double loadFactorEnd);
 private:
-
-	std::string name_;
+    std::string mName;
 
 };
 

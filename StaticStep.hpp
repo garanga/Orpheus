@@ -23,36 +23,34 @@ enum class ConcentratedLoadType;
 
 class StaticStep  : public Step
 {
-private:
-
 public:
 
-	double timeBegin;
-	double timeEnd;
-	double timeIncrement;
-	double loadFactorBegin;
-	double loadFactorEnd;
+   double timeBegin;
+   double timeEnd;
+   double timeIncrement;
+   double loadFactorBegin;
+   double loadFactorEnd;
 
-	std::vector<Constraint*> constraints;
-	std::vector<Load*> loads;
+   std::vector<Constraint*> constraints;
+   std::vector<Load*> loads;
 
-	// Specialized constructor
-	StaticStep(std::string myName,
-               double myTimeBegin,
-			   double myTimeEnd,
-			   double myTimeIncrement,
-			   double myLoadFactorBegin,
-			   double myLoadFactorEnd);
+   // Specialized constructor
+   StaticStep(std::string myName,
+              double myTimeBegin,
+              double myTimeEnd,
+              double myTimeIncrement,
+              double myLoadFactorBegin,
+              double myLoadFactorEnd);
 
-	~StaticStep();
+   ~StaticStep();
 
-	// A method creating a DisplacementConstraint object
-	DisplacementConstraint*
-	CreateDispacementConstraint(std::string myName, std::vector<int> myRegion, DisplacementConstraintType myType, double* myValue);
+   // A method creating a DisplacementConstraint object
+   DisplacementConstraint*
+   CreateDispacementConstraint(std::string myName, std::vector<int> myRegion, DisplacementConstraintType myType, double* myValue);
 
-	// A method creating a ConcentratedLoad object
-	ConcentratedLoad*
-	CreateConcentratedLoad(std::string myName, std::vector<int> myRegion, ConcentratedLoadType myType, double* myValue);
+   // A method creating a ConcentratedLoad object
+   ConcentratedLoad*
+   CreateConcentratedLoad(std::string myName, std::vector<int> myRegion, ConcentratedLoadType myType, double* myValue);
 
 };
 
