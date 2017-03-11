@@ -12,91 +12,104 @@
 #include <iostream>
 
 Model::Model(std::string name)
-	: name_(name)
+    : mName(name)
 {
-
-	std::cout << "The model '" << name_ << "' is created" << std::endl;
-
-	// Creating an initial step
-//	Step* step = new InitialStep("Initial");
-//	steps.push_back(step);
-
+    std::cout << "The model '" << mName << "' is created" << std::endl;
 }
 
 Model::~Model()
 {
-	for (auto body = bodies.begin(); body < bodies.end(); ++body)
-	{
-		delete *body;
-	}
-
-	for (auto part = parts.begin(); part < parts.end(); ++part)
-	{
-		delete *part;
-	}
-
-	for (auto material = materials.begin(); material < materials.end(); ++material)
-	{
-		delete *material;
-	}
-
-	for (auto step = steps.begin(); step < steps.end(); ++step)
-	{
-		delete *step;
-	}
+    for (auto it = bodies.begin(); it < bodies.end(); ++it)
+        delete *it;
+    for (auto it = parts.begin(); it < parts.end(); ++it)
+        delete *it;
+    for (auto it = materials.begin(); it < materials.end(); ++it)
+        delete *it;
+    for (auto it = steps.begin(); it < steps.end(); ++it)
+        delete *it;
 }
 
-std::string
-Model::getName() const
+Body* Model::createBody(std::string name)
 {
-	return name_;
+    Body* body = new Body(name);
+    bodies.push_back(body);
+    return body;
 }
 
-Body*
-Model::createBody(std::string name)
+Part* Model::createPart(std::string name)
 {
-	Body* body = new Body(name);
-	bodies.push_back(body);
-	return body;
+    Part* part = new Part(name);
+    parts.push_back(part);
+    return part;
 }
 
-Part*
-Model::createPart(std::string name)
+Material* Model::createIsotropic(std::string name, double young, double poisson)
 {
-	Part* part = new Part(name);
-	parts.push_back(part);
-	return part;
+    Isotropic* material = new Isotropic(name, young, poisson);
+    materials.push_back(material);
+    return material;
 }
 
-Material*
-Model::createIsotropic(std::string name, double young, double poisson)
+StaticStep* Model::createStaticStep(std::string name,
+                                    double timeBegin,
+                                    double timeEnd,
+                                    double timeIncrement,
+                                    double loadFactorBegin,
+                                    double loadFactorEnd)
 {
-	Isotropic* material = new Isotropic(name, young, poisson);
-	materials.push_back(material);
-	return material;
+    StaticStep* step = new StaticStep(name, timeBegin, timeEnd, timeIncrement, loadFactorBegin, loadFactorEnd);
+    steps.push_back(step);
+    return step;
 }
 
-//Step* Model::CreateStaticStep(std::string myName,
-//                              double myTimeBegin,
-//							  double myTimeEnd,
-//							  double myTimeIncrement,
-//							  double myLoadFactorBegin,
-//							  double myLoadFactorEnd)
-//{
-//	Step* step = new StaticStep(myName, myTimeBegin, myTimeEnd, myTimeIncrement, myLoadFactorBegin, myLoadFactorEnd);
-//	steps.push_back(step);
-//	return step;
-//}
-
-StaticStep*
-Model::createStaticStep(std::string name,
-                        double timeBegin,
-                        double timeEnd,
-						double timeIncrement,
-						double loadFactorBegin,
-						double loadFactorEnd)
+void Model::setMaterialToPart(std::string materName, std::string partName)
 {
-	StaticStep* step = new StaticStep(name, timeBegin, timeEnd, timeIncrement, loadFactorBegin, loadFactorEnd);
-	steps.push_back(step);
-	return step;
+    auto materIter = std::find_if(materials.begin(),materials.end(),
+                    [&materName](Material* material)
+                    {
+                        return material->getName() == materName;
+                    });
+
+    auto partIter = std::find_if(parts.begin(),parts.end(),
+                    [&partName](Part* part)
+                    {
+                        return part->getName() == partName;
+                    });
+
+    bool materCond = materIter == materials.end();
+    bool  partCond =  partIter == parts.end();
+
+    if (materCond or partCond)
+    {
+        // Exception NOTFOUND
+        std::cout << "material or part not found" << std::endl;
+        return;
+    }
+    (*partIter)->setMaterial((*materIter));
+
+}
+
+std::string Model::getName() const
+{
+    return mName;
+}
+
+Body* Model::getBody(std::string name)
+{
+    auto it = std::find_if(bodies.begin(),bodies.end(),
+              [&name](Body* body)
+              {
+                     return body->getName() == name;
+              });
+    return *it;
+}
+
+Part* Model::getPart(std::string name)
+{
+    auto it = std::find_if(parts.begin(),parts.end(),
+              [&name](Part* part)
+              {
+                     return part->getName() == name;
+              });
+    return *it;
 }

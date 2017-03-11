@@ -23,39 +23,22 @@ class Body
 
 public:
 
-	Body(std::string name);
+    Body(std::string name);
    ~Body();
 
-    void
-	addPoint(double x1, double x2);
+    void addPoint(double x1, double x2);
+    void addLine(int point1No, int point2No);
 
-    void
-	addLine(int point1No, int point2No);
+    void setLineDivisions(int lineNo, int divisions);
 
-    void
-	setLineDivisions(int lineNo, int divisions);
-
-	// A method creating a mesh on part
-	Mesh*
-	createMesh(ElementType* type);
-
-	int
-	getLinesNum() const;
-
-	std::vector<Line*>
-	getLines() const;
-
-	Mesh*
-	getMesh() const;
+    std::string        getName() const;
+    int                getLinesNum() const;
+    std::vector<Line*> getLines() const;
 
 private:
-
-	std::string name_;
-
-	std::vector<Point*> points_;
-	std::vector<Line*>  lines_;
-
-	Mesh* mesh_ = nullptr;
+    std::string         mName;
+    std::vector<Point*> mPoints;
+    std::vector<Line*>  mLines;
 
 };
 

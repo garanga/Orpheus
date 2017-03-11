@@ -22,8 +22,7 @@ Solver::Solver(Model* model, Odb* odb)
 }
 
 
-void
-Solver::solve()
+void Solver::solve()
 {
 	////////////////
 	// Input data //
@@ -31,10 +30,11 @@ Solver::solve()
 
 	// For now it is only one part exists
 	Mesh* mesh = model_->parts[0]->mesh;
+	int numNodes = mesh->nodes.size();
 
-	VectorXd  u    = Eigen::VectorXd::Zero(2*mesh->nodesNum);
-	VectorXd du    = Eigen::VectorXd::Zero(2*mesh->nodesNum);
-	VectorXd force = Eigen::VectorXd::Zero(2*mesh->nodesNum);
+	VectorXd  u    = Eigen::VectorXd::Zero(2*numNodes);
+	VectorXd du    = Eigen::VectorXd::Zero(2*numNodes);
+	VectorXd force = Eigen::VectorXd::Zero(2*numNodes);
 
 	// Initialize the first step
 
@@ -180,7 +180,7 @@ Solver::solve()
 //			/////////////////////////////////
 
 			int iter = 0;
-			du = Eigen::VectorXd::Zero(2*mesh->nodesNum);		// Doubled
+			du = Eigen::VectorXd::Zero(2*numNodes);		// Doubled
 
 			while (flag20==1)
 			{
@@ -192,8 +192,8 @@ Solver::solve()
 
 				// Initialize global stiffness K and residual vector F
 
-				SparseMatrix<double> globK(2*mesh->nodesNum,2*mesh->nodesNum);
-				VectorXd force = VectorXd::Zero(2*mesh->nodesNum);
+				SparseMatrix<double> globK(2*numNodes,2*numNodes);
+				VectorXd force = VectorXd::Zero(2*numNodes);
 
 				// Assemble K and F (update)
 
@@ -776,6 +776,7 @@ SparseMatrix<double> Solver::calcGlobK() const
 {
 
 	Mesh* mesh = model_->parts[0]->mesh;
+	int numNodes = mesh->nodes.size();
 
 	std::cout.precision(2);
 	std::cout.setf(std::ios::showpos);
@@ -819,7 +820,7 @@ SparseMatrix<double> Solver::calcGlobK() const
 		}
 	}
 
-	SparseMatrix<double> globK(2*mesh->nodesNum,2*mesh->nodesNum);
+	SparseMatrix<double> globK(2*numNodes,2*numNodes);
 
 	globK.setFromTriplets(triplets.begin(), triplets.end());
 

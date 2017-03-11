@@ -11,7 +11,8 @@
 
 ElementType::ElementType()
 {
-
+    mDimension = 0;
+    mNodesNum  = 0;
 }
 
 ElementType::~ElementType()
@@ -19,14 +20,12 @@ ElementType::~ElementType()
 
 }
 
-std::string
-ElementType::getName() const
+std::string ElementType::getName() const
 {
-	return name_;
+    return mName;
 }
 
-int
-ElementType::getNodesNum() const
+int ElementType::getNodesNum() const
 {
-	return nodesNum_;
+    return mNodesNum;
 }

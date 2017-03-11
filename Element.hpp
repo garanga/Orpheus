@@ -15,16 +15,18 @@ class Element
 
 public:
 
-	Element(int, int*, ElementType*);
-	int id() const;
-	int* getConnect() const;
-	ElementType* type() const;
+    explicit Element(int, int*, ElementType*);
+    ~Element();
+
+    int          getId() const;
+    int*         getConnect() const;
+    ElementType* getType() const;
 
 private:
 
-	int mId;
-	int* mConnectivity;
-	ElementType* mType;
+    int          mId;
+    int*         mConnectivity; // Array
+    ElementType* mType;
 
 };
 

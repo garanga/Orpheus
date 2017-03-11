@@ -5,7 +5,7 @@
 #include <vector>
 
 #include <Eigen/Dense>
-
+/*
 int main(int argc, char* argv[])
 {
 	// Model database
@@ -180,34 +180,13 @@ int main(int argc, char* argv[])
 									  value);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	Job* job;
 	job = mdb->createJob("Job-1", model);
 
 	time_t time1;
 	time(&time1);
 
-
-
-
-
 	job->Submit();
-
-
-
 
 
 	time_t time2;
@@ -218,114 +197,57 @@ int main(int argc, char* argv[])
 	std::cout << mdb->getModel(0) << std::endl;
 	std::cout << mdb->getModel("Model-1") << std::endl;
 
-
-
-//	delete job;
-//	delete step1;
-//	delete step2;
-//	delete mesh;
-//	delete material;
-//	delete part;
-//	delete model;
-	delete mdb;
-
 	return 0;
 
+}
+*/
+
+int main()
+{
+    std::string modelName = "Model_1";
+    std::string  bodyName = "Body_1";
+    std::string  partName = "Part_1";
+    std::string materName = "Iso_1";
 
 
+    Mdb *testMdb = new Mdb;
 
-//	Eigen::Matrix<double,2,4> xy;
-//	xy << -1.0,  1.0, 1.0, -1.0,
-//		  -1.0, -1.0, 1.0,  1.0;
-//
-//	Eigen::Matrix<double,2,2> ans;
-//
-//	ans = type->calcLocK(0,0,xy);
-//	ans = type->calcLocK(0,1,xy);
-//	ans = type->calcLocK(0,2,xy);
-//	ans = type->calcLocK(0,3,xy);
-//	ans = type->calcLocK(1,1,xy);
-//	ans = type->calcLocK(1,2,xy);
-//	ans = type->calcLocK(1,3,xy);
-//	ans = type->calcLocK(2,2,xy);
-//	ans = type->calcLocK(2,3,xy);
-//	ans = type->calcLocK(3,3,xy);
+    testMdb->createModel(modelName);
+    Model *currentModel = testMdb->getModel(modelName);
+/*
+    currentModel->createBody(bodyName);
+    // What the point?
+    currentModel->getBody(bodyName)->addPoint(-5.0,-5.0);  // 0
+    currentModel->getBody(bodyName)->addPoint( 5.0,-5.0);  // 1
+    currentModel->getBody(bodyName)->addPoint( 5.0, 5.0);  // 2
+    currentModel->getBody(bodyName)->addPoint(-5.0, 5.0);  // 3
 
+    currentModel->getBody(bodyName)->addLine(0,1);         // 0
+    currentModel->getBody(bodyName)->addLine(1,2);         // 1
+    currentModel->getBody(bodyName)->addLine(2,3);         // 2
+    currentModel->getBody(bodyName)->addLine(3,0);         // 3
+*/
+    // Create part
+    currentModel->createPart(partName);
 
+    double* sizes     = new double[2];
+    int*    divisions = new int[2];
 
+    sizes[0]     = 10.0;
+    sizes[1]     = 10.0;
 
+    divisions[0] =  1;
+    divisions[1] =  1;
 
+    currentModel->getPart(partName)->setSizes(sizes);
+    currentModel->getPart(partName)->setDivisions(divisions);
 
+    currentModel->createIsotropic(materName, 200e9, 0.25);
+    currentModel->setMaterialToPart(materName, partName);
+    currentModel->getPart(partName)->setElementType(ElementTypeEnum::P4);
+    currentModel->getPart(partName)->CreateMesh();
 
+    delete testMdb;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//	IsotropicMaterial* material;
-//	material = model -> CreateIsotropicMaterial("Material-1", 200.0e9, 0.3);
-//
-//
-//	cout << material -> name << endl;
-
-//	int numberOfPoints = 4, numberOfSegments = 4;
-//	double* points;
-//	points = new double[2*numberOfPoints];
-//	points[0] = 0.0; points[1] = 0.0;
-//	points[2] = 1.0; points[3] = 0.0;
-//	points[4] = 1.0; points[5] = 1.0;
-//	points[6] = 0.0; points[7] = 1.0;
-//	int* segments;
-//	segments = new int[2*numberOfSegments];
-//	segments[0] = 1; segments[1] = 2;
-//	segments[2] = 2; segments[3] = 3;
-//	segments[4] = 3; segments[5] = 4;
-//	segments[6] = 4; segments[7] = 1;
-//
-//	Part part(numberOfPoints, numberOfSegments, points, segments);
-//
-//	std::cout << part.GetNumberOfPoints() << std::endl;
-//
-//	Mesh mesh(part);
-//
-//    Eigen::SparseMatrix<int> A(5,5);
-//
-//    std::vector< Eigen::Triplet<int> > triplets;
-//
-//    triplets.push_back(Eigen::Triplet<int>(0, 1, 3));
-//    triplets.push_back(Eigen::Triplet<int>(1, 0, 22));
-//    triplets.push_back(Eigen::Triplet<int>(2, 1, 5));
-//    triplets.push_back(Eigen::Triplet<int>(2, 3, 1));
-//    triplets.push_back(Eigen::Triplet<int>(4, 2, 14));
-//    triplets.push_back(Eigen::Triplet<int>(4, 4, 8));
-//
-//    A.setFromTriplets(triplets.begin(), triplets.end());
-//
-////    A.insert(0, 0);
-//    std::cout << A;
-//
-////    A.makeCompressed();
-//
-////    std::cout << std::endl << A;
-//
-//
-//
-//	delete[] points;
-//	delete[] segments;
-
-
+    return 0;
 }

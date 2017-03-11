@@ -12,18 +12,24 @@
 
 Node::Node(int myId, double* myCoord)
 {
-	mId = myId;
-	mCoord = myCoord;
+    mId    = myId;
+    mCoord = myCoord;
+}
+
+Node::~Node()
+{
+    if (mCoord != nullptr)
+        delete [] mCoord;
 }
 
 int Node::getId() const
 {
-	return mId;
+    return mId;
 }
 
 double* Node::getCoord() const
 {
-	return mCoord;
+    return mCoord;
 }
 
 

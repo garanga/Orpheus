@@ -30,9 +30,11 @@ LinearSolver::solve()
 	// For now it is only one part exists
 	Mesh* mesh = model_->parts[0]->mesh;
 
-	VectorXd  u    = VectorXd::Zero(2*mesh->nodesNum);
+	int numNodes = mesh->nodes.size();
+
+	VectorXd  u    = VectorXd::Zero(2*numNodes);
 //	VectorXd du    = VectorXd::Zero(2*mesh->nodesNum);
-	VectorXd force = VectorXd::Zero(2*mesh->nodesNum);
+	VectorXd force = VectorXd::Zero(2*numNodes);
 
 	// Initializing the first step
 	auto step = (model_->steps).begin();
@@ -133,14 +135,14 @@ LinearSolver::solve()
 		double dispFactor = timeIncrement/stepTime*(loadFactorEnd-loadFactorBegin);
 		std::cout << "displacements variation factor: " << dispFactor << std::endl;
 
-		VectorXd du = VectorXd::Zero(2*mesh->nodesNum);
+		VectorXd du = VectorXd::Zero(2*numNodes);
 
 		// Initialize global stiffness K and residual vector F
 
-		SparseMatrix<double> globK(2*mesh->nodesNum,2*mesh->nodesNum);
+		SparseMatrix<double> globK(2*numNodes,2*numNodes);
 		globK = calcGlobK();
 
-		VectorXd force = VectorXd::Zero(2*mesh->nodesNum);
+		VectorXd force = VectorXd::Zero(2*numNodes);
 		updateForce(u, force);
 
 		// Prescribed loads
@@ -274,6 +276,7 @@ SparseMatrix<double> LinearSolver::calcGlobK() const
 {
 
 	Mesh* mesh = model_->parts[0]->mesh;
+	int numNodes = mesh->nodes.size();
 
 	std::cout.precision(2);
 	std::cout.setf(std::ios::showpos);
@@ -317,7 +320,7 @@ SparseMatrix<double> LinearSolver::calcGlobK() const
 		}
 	}
 
-	SparseMatrix<double> globK(2*mesh->nodesNum,2*mesh->nodesNum);
+	SparseMatrix<double> globK(2*numNodes, 2*numNodes);
 
 	globK.setFromTriplets(triplets.begin(), triplets.end());
 

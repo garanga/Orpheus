@@ -51,5 +51,8 @@ enum class FieldType
 	U 	= 10
 };
 
-
+enum class ElementTypeEnum
+{
+    P4
+};
 #endif /* SYMBOLICCONSTANTS_HPP_ */

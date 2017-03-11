@@ -11,24 +11,30 @@
 
 Element::Element(int myId, int* myConnectivity, ElementType* myType)
 {
-	mId = myId;
-	mConnectivity = myConnectivity;
-	mType = myType;
+     mId           =  myId;
+     mConnectivity = myConnectivity;
+     mType         = myType;
 }
 
-int Element::id() const
+Element::~Element()
 {
-	return mId;
+    if (mConnectivity != nullptr)
+        delete [] mConnectivity;
+    if (mType != nullptr)
+        delete mType;
+}
+
+int Element::getId() const
+{
+     return mId;
 }
 
 int* Element::getConnect() const
 {
-	return mConnectivity;
+     return mConnectivity;
 }
 
-ElementType* Element::type() const
+ElementType* Element::getType() const
 {
-	return mType;
+     return mType;
 }
-
-

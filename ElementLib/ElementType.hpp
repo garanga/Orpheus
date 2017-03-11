@@ -18,38 +18,31 @@
  */
 class ElementType
 {
-
 public:
 
-	ElementType();
+    ElementType();
+    virtual  ~ElementType();
 
-	virtual
-   ~ElementType();
+    virtual Eigen::Matrix<double,2,2>
+    calcLocK(int i, int j, Eigen::Matrix<double,2,4> &nodesCoordGlob) const = 0;
 
-	virtual Eigen::Matrix<double,2,2>
-	calcLocK(int i, int j, Eigen::Matrix<double,2,4> &nodesCoordGlob) const = 0;
+    std::string getName() const;
+    int         getNodesNum() const;
 
-	std::string
-	getName() const;
+    virtual void
+    update(Eigen::Matrix<double,2,4> &nodesCoordGlob,
+           Eigen::VectorXd &u                       ,
+           Eigen::MatrixXd &sigma                   ,
+           Eigen::VectorXd &force                   ) const = 0;
 
-	int
-	getNodesNum() const;
-
-
-
-	virtual void
-	update(Eigen::Matrix<double,2,4> &nodesCoordGlob, Eigen::VectorXd &u, Eigen::MatrixXd &sigma, Eigen::VectorXd &force) const = 0;
-
-
-
-	virtual void
-	updateForce(Eigen::Matrix<double,2,4> &nodesCoordGlob, Eigen::VectorXd &u, Eigen::VectorXd &force) const = 0;
+    virtual void
+    updateForce(Eigen::Matrix<double,2,4> &nodesCoordGlob,
+                Eigen::VectorXd &u                       ,
+                Eigen::VectorXd &force                   ) const = 0;
 
 protected:
-
-	std::string name_ = "";
-	int dimension_ = 0;
-	int nodesNum_  = 0;
+    std::string mName;
+    int         mDimension, mNodesNum;
 
 };
 

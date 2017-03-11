@@ -66,7 +66,7 @@ saveOdb(const Odb* odb, std::string filePath)
 
 	std::ofstream file(filePath);
 
-	file << odb->parts_[0]->mesh->nodesNum << "\n";
+	file << odb->parts_[0]->mesh->nodes.size()<< "\n";
 
 	file.precision(3);
 	file.setf(std::ios::scientific);
@@ -79,7 +79,7 @@ saveOdb(const Odb* odb, std::string filePath)
 		delete[] coord;
 	}
 
-	file << std::noshowpos << odb->parts_[0]->mesh->elementsNum << "\n";
+	file << std::noshowpos << odb->parts_[0]->mesh->elements.size() << "\n";
 
 	for (auto element = (odb->parts_[0]->mesh->elements).begin();
 	          element < (odb->parts_[0]->mesh->elements).end(); ++element)

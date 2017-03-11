@@ -12,19 +12,21 @@
 #include <vector>
 
 class Node;
+class Part;
 class Element;
+class ElementType;
 class ElementEdge;
 
-struct Mesh
+class Mesh
 {
-	int nodesNum;
-	int elementsNum;
-	int elementEdgesNum;
+public:
+    std::vector <Node*>        nodes;
+    std::vector <Element*>     elements;
+    std::vector <ElementEdge*> elementEdges;
 
-	std::vector <Node*> nodes;
-	std::vector <Element*> elements;
-	std::vector <ElementEdge*> elementEdges;
-
+    Mesh();
+    Mesh(Part* myPart, ElementType* myType);
+    ~Mesh();
 };
 
 

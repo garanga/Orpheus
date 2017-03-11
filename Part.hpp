@@ -14,6 +14,7 @@
 
 class Material;
 class ElementType;
+enum class ElementTypeEnum;
 struct Mesh;
 
 //! A test class1
@@ -25,40 +26,33 @@ struct Mesh;
 
 class Part
 {
-
 public:
 
-	Part(std::string name);
+    Part(std::string name);
+    ~Part();
 
-	void
-	setSizes(double* sizes);
+    void setSizes(double* sizes);
+    void setDivisions(int* divisions);
+    void setMaterial(Material*);
+    void setElementType(ElementTypeEnum, bool = false);
 
-	void
-	setDivisions(int* divisions);
+    // A method creating a mesh on part
+    void CreateMesh(bool = true);
+    void CreateMesh(ElementType* type, bool writeMesh = true);
 
-	// A method creating a mesh on part
-	Mesh*
-	CreateMesh(ElementType* type, bool writeMesh = true);
+    std::string  getName() const;
+    double*      getSizes() const;
+    int*         getDivisions() const;
 
-	std::string
-	getName() const;
-
-	double*
-	getSizes() const;
-
-	int*
-	getDivisions() const;
-
-	Mesh* mesh = nullptr;
+    Mesh* mesh;
 
 private:
-
-	std::string name_;
-	double*     sizes_ = nullptr;
-	int*        divisions_ = nullptr;
+    std::string  mName;
+    Material*    mMaterial;
+    ElementType* mElementType;
+    double*      mSizes;
+    int*         mDivisions;
 
 };
-
-
 
 #endif /* PART_HPP_ */

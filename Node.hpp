@@ -10,13 +10,15 @@
 
 class Node
 {
-private:
-	int mId;
-	double* mCoord;
 public:
-	Node(int myId, double* myCoord);
-	int getId() const;
-	double* getCoord() const;
+    explicit Node(int myId, double* myCoord);
+    ~Node();
+
+    int     getId() const;
+    double* getCoord() const;
+private:
+    int     mId;
+    double* mCoord; // Array
 };
 
 #endif /* NODE_HPP_ */

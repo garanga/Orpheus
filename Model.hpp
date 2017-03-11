@@ -20,47 +20,41 @@ class StaticStep;
 
 class Model
 {
-
 public:
+    std::vector <Body*>       bodies;
+    std::vector <Part*>       parts;
+    std::vector <Material*>   materials;
+    std::vector <StaticStep*> steps;
 
-	std::vector <Body*>       bodies;
-	std::vector <Part*>       parts;
-	std::vector <Material*>   materials;
-	std::vector <StaticStep*> steps;
+    //! Specialized constructor
+    Model(std::string name);
+    ~Model();
 
-	//! Specialized constructor
-	Model(std::string name);
+    //! A method for creating a Body object
+    Body*       createBody(std::string name);
+    //! A method for creating a Part object
+    Part*       createPart(std::string name);
+    //! A method for creating a Material object
+    Material*   createIsotropic(std::string name, double young, double poisson);
 
-   ~Model();
+    //! A method for creating a StaticStep object
+    StaticStep* createStaticStep(std::string name,
+                                 double timeBegin,
+                                 double timeEnd,
+                                 double timeIncrement,
+                                 double loadFactorBegin,
+                                 double loadFactorEnd);
 
-	std::string
-	getName() const;
+    void setMaterialToPart(std::string, std::string);
 
-	//! A method for creating a Body object
-	Body*
-	createBody(std::string name);
-
-	//! A method for creating a Part object
-	Part*
-	createPart(std::string name);
-
-	//! A method for creating a Material object
-	Material*
-	createIsotropic(std::string name, double young, double poisson);
-
-	//! A method for creating a StaticStep object
-	StaticStep*
-	createStaticStep(std::string name,
-                     double timeBegin,
-					 double timeEnd,
-					 double timeIncrement,
-					 double loadFactorBegin,
-					 double loadFactorEnd);
+    std::string  getName() const;
+    Body*        getBody(std::string);
+    Part*        getPart(std::string);
+    Material*    getMatertial(std::string);
+    StaticStep * getStatciStep(std::string);
 
 private:
-
-	std::string name_;
-
+    std::string mName;
 };
 
 #endif /* MODEL_HPP_ */
