@@ -17,17 +17,20 @@ enum class DisplacementConstraintType;
 
 class Constraint
 {
-private:
-	std::string mName;
 public:
+    Constraint(std::string myName               , std::vector<int> myRegion,
+               DisplacementConstraintType myType, double* myValue          );
+    Constraint(const Constraint&);
+    virtual ~Constraint();
 
-	DisplacementConstraintType type;
-	std::vector<int> region;
-	double* value;
+    DisplacementConstraintType type;
+    std::vector<int>           region;
+    double*                    value; // Array
 
-	Constraint(std::string myName, std::vector<int> myRegion, DisplacementConstraintType myType, double* myValue);
-	virtual ~Constraint();
-	friend class Job;
+    friend class Job;
+
+private:
+    std::string mName;
 };
 
 

@@ -16,17 +16,20 @@ enum class ConcentratedLoadType;
 
 class Load
 {
-private:
-	std::string mName;
 public:
+    Load(std::string myName         , std::vector<int> myRegion,
+         ConcentratedLoadType myType, double* myValue          );
+    Load(const Load&);
+    virtual ~Load();
 
-	std::vector<int> region;
-	ConcentratedLoadType type;
-	double* value;
 
-	Load(std::string myName, std::vector<int> myRegion, ConcentratedLoadType myType, double* myValue);
-	virtual ~Load();
-	friend class Job;
+    std::vector<int>     region;
+    ConcentratedLoadType type;
+    double*              value; // Array
+    friend class Job;
+
+private:
+    std::string mName;
 };
 
 

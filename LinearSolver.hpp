@@ -20,19 +20,19 @@ class LinearSolver
 {
 
 public:
+    LinearSolver(Model*, Odb*);
+    ~LinearSolver();
 
-	LinearSolver(Model*, Odb*);
-
-	void solve();
+    void solve();
 
 private:
 
-	Model* model_;
-	Odb*   odb_;
+    Model* model_;
+    Odb*   odb_;
 
-	void update(Eigen::VectorXd &u, Eigen::MatrixXd &sigma, Eigen::VectorXd & force) const;
-	Eigen::SparseMatrix<double> calcGlobK() const;
-	void updateForce(Eigen::VectorXd &u, Eigen::VectorXd &force) const;
+    void update(Eigen::VectorXd &u, Eigen::MatrixXd &sigma, Eigen::VectorXd & force) const;
+    Eigen::SparseMatrix<double> calcGlobK() const;
+    void updateForce(Eigen::VectorXd &u, Eigen::VectorXd &force) const;
 
 };
 

@@ -14,260 +14,264 @@ using namespace Eigen;
 typedef Triplet<double> T;
 
 LinearSolver::LinearSolver(Model* model, Odb* odb)
-	: model_(model), odb_(odb)
+    : model_(model), odb_(odb)
 {
 
 }
 
+LinearSolver::~LinearSolver()
+{
+
+}
 
 void
 LinearSolver::solve()
 {
-	////////////////
-	// Input data //
-	////////////////
+    ////////////////
+    // Input data //
+    ////////////////
 
-	// For now it is only one part exists
-	Mesh* mesh = model_->parts[0]->mesh;
+    // For now it is only one part exists
+    Mesh* mesh = model_->parts[0]->mesh;
 
-	int numNodes = mesh->nodes.size();
+    int numNodes = mesh->nodes.size();
 
-	VectorXd  u    = VectorXd::Zero(2*numNodes);
-//	VectorXd du    = VectorXd::Zero(2*mesh->nodesNum);
-	VectorXd force = VectorXd::Zero(2*numNodes);
+    VectorXd  u    = VectorXd::Zero(2*numNodes);
+//    VectorXd du    = VectorXd::Zero(2*mesh->nodesNum);
+    VectorXd force = VectorXd::Zero(2*numNodes);
 
-	// Initializing the first step
-	auto step = (model_->steps).begin();
-	// Creating the step in the output database
-	odb_->createStep(*step);
-
-
-	std::cout << "//////////////////////////////////////////////////" << std::endl;
-	std::cout << "// The step " << (*step)->getName() << " is initialized" << std::endl;
-	std::cout << "//////////////////////////////////////////////////" << std::endl;
-
-	double timeBegin = (*step)->timeBegin;					// Starting time
-	std::cout << "Starting time: " << timeBegin << std::endl;
-	double timeEnd   = (*step)->timeEnd;				// Ending time
-	std::cout << "Ending time: " << timeEnd << std::endl;
-	double stepTime = timeEnd-timeBegin;					// Time interval for the load step
-
-	double timeIncrement   = (*step)->timeIncrement;		// Time increment
-	std::cout << "Time increment: " << timeIncrement << std::endl;
-//	double timeIncrementOld = timeIncrement;					// Time increment of the previous iteration
-//	std::cout << "Time increment old: " << timeIncrementOld << std::endl;
-
-	double loadFactorBegin   = (*step)->loadFactorBegin;	// Starting load factor
-	std::cout << "Starting load factor: " << loadFactorBegin << std::endl;
-	double loadFactorEnd   = (*step)->loadFactorEnd;		// Ending load factor
-	std::cout << "Ending load factor: " << loadFactorEnd << std::endl;
+    // Initializing the first step
+    auto step = (model_->steps).begin();
+    // Creating the step in the output database
+    odb_->createStep(*step);
 
 
+    std::cout << "//////////////////////////////////////////////////" << std::endl;
+    std::cout << "// The step " << (*step)->getName() << " is initialized" << std::endl;
+    std::cout << "//////////////////////////////////////////////////" << std::endl;
+
+    double timeBegin = (*step)->timeBegin;                    // Starting time
+    std::cout << "Starting time: " << timeBegin << std::endl;
+    double timeEnd   = (*step)->timeEnd;                // Ending time
+    std::cout << "Ending time: " << timeEnd << std::endl;
+    double stepTime = timeEnd-timeBegin;                    // Time interval for the load step
+
+    double timeIncrement   = (*step)->timeIncrement;        // Time increment
+    std::cout << "Time increment: " << timeIncrement << std::endl;
+//    double timeIncrementOld = timeIncrement;                    // Time increment of the previous iteration
+//    std::cout << "Time increment old: " << timeIncrementOld << std::endl;
+
+    double loadFactorBegin   = (*step)->loadFactorBegin;    // Starting load factor
+    std::cout << "Starting load factor: " << loadFactorBegin << std::endl;
+    double loadFactorEnd   = (*step)->loadFactorEnd;        // Ending load factor
+    std::cout << "Ending load factor: " << loadFactorEnd << std::endl;
 
 
-	double time = timeBegin;								// Current time
 
-	/////////////////////////
-	// Load increment loop //
-	/////////////////////////
 
-//	int istep = -1;											// Load increment number
+    double time = timeBegin;                                // Current time
 
-	int flag10 = 1; // Open the door to the load increment loop
-	while (flag10)
-	{
-	    flag10 = 0; 									// Close the door to the load increment loop
+    /////////////////////////
+    // Load increment loop //
+    /////////////////////////
 
-//		VectorXd uOld = u;								// Saving the displacement vector of the previous iteration
+//    int istep = -1;                                            // Load increment number
 
-//		double timeOld = time;							// Saving the current time
+    int flag10 = 1; // Open the door to the load increment loop
+    while (flag10)
+    {
+        flag10 = 0;                                     // Close the door to the load increment loop
 
-//		updateOutputs(u, force);
+//        VectorXd uOld = u;                                // Saving the displacement vector of the previous iteration
 
-		time += timeIncrement;												// Increase time
-//		istep += 1;															// Increase load increment number
+//        double timeOld = time;                            // Saving the current time
 
-		if ((time-timeEnd)>1.0e-10) /* Using chosen time increment we are jump over the ending time of the load step */
-		{
-			if ((timeIncrement-(time-timeEnd))>1.0e-10)	/* variant1: on the previous iteration we were far from the ending time */
-			{
-				timeIncrement -= time-timeEnd;			// Choosing correct time increment
-				time = timeEnd;							//
-			}
-			else										/* variant2: on the previous iteration we are near with the ending time */
-			{
-				++step;									// Progressing to the next load step
+//        updateOutputs(u, force);
 
-				if (step==(model_->steps).end())		/* The previous load step was last load step */
-				{
-					flag10 = 0;							// Close the door to the load increment loop													??????? It is already closed
-					break;								// Leave the bisection loop. Since the door to the load increment loop is closed this will lead to ending of the load loop also
-				}
-				else													// Next load step
-				{
-					odb_->createStep(*step);
+        time += timeIncrement;                                                // Increase time
+//        istep += 1;                                                            // Increase load increment number
 
-					std::cout << "//////////////////////////////////////////////////" << std::endl;
-					std::cout << "// The step " << (*step)->getName() << " is initialized" << std::endl;
-					std::cout << "//////////////////////////////////////////////////" << std::endl;
+        if ((time-timeEnd)>1.0e-10) /* Using chosen time increment we are jump over the ending time of the load step */
+        {
+            if ((timeIncrement-(time-timeEnd))>1.0e-10)    /* variant1: on the previous iteration we were far from the ending time */
+            {
+                timeIncrement -= time-timeEnd;            // Choosing correct time increment
+                time = timeEnd;                            //
+            }
+            else                                        /* variant2: on the previous iteration we are near with the ending time */
+            {
+                ++step;                                    // Progressing to the next load step
 
-					time -= timeIncrement;
+                if (step==(model_->steps).end())        /* The previous load step was last load step */
+                {
+                    flag10 = 0;                            // Close the door to the load increment loop                                                    ??????? It is already closed
+                    break;                                // Leave the bisection loop. Since the door to the load increment loop is closed this will lead to ending of the load loop also
+                }
+                else                                                    // Next load step
+                {
+                    odb_->createStep(*step);
 
-					timeBegin = (*step)->timeBegin;					// Starting time
-					timeEnd = (*step)->timeEnd;						// Ending time
-					stepTime = timeEnd-timeBegin;					// Time interval for the load step
+                    std::cout << "//////////////////////////////////////////////////" << std::endl;
+                    std::cout << "// The step " << (*step)->getName() << " is initialized" << std::endl;
+                    std::cout << "//////////////////////////////////////////////////" << std::endl;
 
-					timeIncrement   = (*step)->timeIncrement;		// Time increment
-//					timeIncrementOld = timeIncrement;
+                    time -= timeIncrement;
 
-					loadFactorBegin   = (*step)->loadFactorBegin;	// Starting load factor
-					loadFactorEnd   = (*step)->loadFactorEnd;		// Starting load factor
+                    timeBegin = (*step)->timeBegin;                    // Starting time
+                    timeEnd = (*step)->timeEnd;                        // Ending time
+                    stepTime = timeEnd-timeBegin;                    // Time interval for the load step
 
-					time += timeIncrement;							// Current time
-				}
-			}
-		}
+                    timeIncrement   = (*step)->timeIncrement;        // Time increment
+//                    timeIncrementOld = timeIncrement;
 
-		// Load factor and (displacements variation) factor
+                    loadFactorBegin   = (*step)->loadFactorBegin;    // Starting load factor
+                    loadFactorEnd   = (*step)->loadFactorEnd;        // Starting load factor
 
-		double loadFactor = loadFactorBegin+(time-timeBegin)/stepTime*(loadFactorEnd-loadFactorBegin);
-		std::cout << "load factor: " << loadFactor << std::endl;
-		double dispFactor = timeIncrement/stepTime*(loadFactorEnd-loadFactorBegin);
-		std::cout << "displacements variation factor: " << dispFactor << std::endl;
+                    time += timeIncrement;                            // Current time
+                }
+            }
+        }
 
-		VectorXd du = VectorXd::Zero(2*numNodes);
+        // Load factor and (displacements variation) factor
 
-		// Initialize global stiffness K and residual vector F
+        double loadFactor = loadFactorBegin+(time-timeBegin)/stepTime*(loadFactorEnd-loadFactorBegin);
+        std::cout << "load factor: " << loadFactor << std::endl;
+        double dispFactor = timeIncrement/stepTime*(loadFactorEnd-loadFactorBegin);
+        std::cout << "displacements variation factor: " << dispFactor << std::endl;
 
-		SparseMatrix<double> globK(2*numNodes,2*numNodes);
-		globK = calcGlobK();
+        VectorXd du = VectorXd::Zero(2*numNodes);
 
-		VectorXd force = VectorXd::Zero(2*numNodes);
-		updateForce(u, force);
+        // Initialize global stiffness K and residual vector F
 
-		// Prescribed loads
+        SparseMatrix<double> globK(2*numNodes,2*numNodes);
+        globK = calcGlobK();
 
-		for (auto load = ((*step)->loads).begin(); load < ((*step)->loads).end(); ++load)
-		{
-			std::vector<int> indices;
-			std::vector<double> values;
+        VectorXd force = VectorXd::Zero(2*numNodes);
+        updateForce(u, force);
 
-			if (static_cast<int>((*load)->type) & static_cast<int>(ConcentratedLoadType::FX))
-			{
-				std::vector<int> region = ((*load)->region);
-				for (unsigned i=0; i<region.size(); ++i)
-				{
-					region[i] *= 2;
-					region[i] += 0;
-				}
-				indices.insert(indices.end(),region.begin(),region.end());
+        // Prescribed loads
 
-				std::vector<double> value(region.size(),((*load)->value[0])*loadFactor);
-				values.insert(values.end(),value.begin(),value.end());
-			}
+        for (auto load = ((*step)->loads).begin(); load < ((*step)->loads).end(); ++load)
+        {
+            std::vector<int> indices;
+            std::vector<double> values;
 
-			if (static_cast<int>((*load)->type) & static_cast<int>(ConcentratedLoadType::FY))
-			{
-				std::vector<int> region = ((*load)->region);
-				for (unsigned i=0; i<region.size(); ++i)
-				{
-					region[i] *= 2;
-					region[i] += 1;
-				}
-				indices.insert(indices.end(),region.begin(),region.end());
+            if (static_cast<int>((*load)->type) & static_cast<int>(ConcentratedLoadType::FX))
+            {
+                std::vector<int> region = ((*load)->region);
+                for (unsigned i=0; i<region.size(); ++i)
+                {
+                    region[i] *= 2;
+                    region[i] += 0;
+                }
+                indices.insert(indices.end(),region.begin(),region.end());
 
-				std::vector<double> value(region.size(),((*load)->value[1])*loadFactor);
-				values.insert(values.end(),value.begin(),value.end());
-			}
+                std::vector<double> value(region.size(),((*load)->value[0])*loadFactor);
+                values.insert(values.end(),value.begin(),value.end());
+            }
 
-			for (unsigned k=0; k<force.size(); ++k)
-			{
-				for (unsigned i=0; i<indices.size(); ++i)
-				{
-					if (k==indices[i])
-					{
-						force(k) += values[i];
-					}
-				}
-			}
-		}
+            if (static_cast<int>((*load)->type) & static_cast<int>(ConcentratedLoadType::FY))
+            {
+                std::vector<int> region = ((*load)->region);
+                for (unsigned i=0; i<region.size(); ++i)
+                {
+                    region[i] *= 2;
+                    region[i] += 1;
+                }
+                indices.insert(indices.end(),region.begin(),region.end());
 
-		// Prescribed constraints
+                std::vector<double> value(region.size(),((*load)->value[1])*loadFactor);
+                values.insert(values.end(),value.begin(),value.end());
+            }
 
-		for (auto constraint = ((*step)->constraints).begin(); constraint < ((*step)->constraints).end(); ++constraint)
-		{
-			std::vector<int> indices;
-			std::vector<double> values;
+            for (unsigned k=0; k<force.size(); ++k)
+            {
+                for (unsigned i=0; i<indices.size(); ++i)
+                {
+                    if (k==indices[i])
+                    {
+                        force(k) += values[i];
+                    }
+                }
+            }
+        }
 
-			if (static_cast<int>((*constraint)->type) & static_cast<int>(DisplacementConstraintType::UX))
-			{
-				std::vector<int> region = ((*constraint)->region);
-				for (unsigned int i=0; i<region.size(); ++i)
-				{
-					region[i] *= 2;
-					region[i] += 0;
-				}
-				indices.insert(indices.end(),region.begin(),region.end());
-				std::vector<double> value(region.size(),((*constraint)->value[0])*dispFactor);
-				values.insert(values.end(),value.begin(),value.end());
-			}
+        // Prescribed constraints
 
-			if (static_cast<int>((*constraint)->type) & static_cast<int>(DisplacementConstraintType::UY))
-			{
-				std::vector<int> region = ((*constraint)->region);
-				for (unsigned int i=0; i<region.size(); ++i)
-				{
-					region[i] *= 2;
-					region[i] += 1;
-				}
-				indices.insert(indices.end(),region.begin(),region.end());
-				std::vector<double> value(region.size(),((*constraint)->value[1])*dispFactor);
-				values.insert(values.end(),value.begin(),value.end());
-			}
+        for (auto constraint = ((*step)->constraints).begin(); constraint < ((*step)->constraints).end(); ++constraint)
+        {
+            std::vector<int> indices;
+            std::vector<double> values;
 
-			for (unsigned k=0; k<globK.outerSize(); ++k)
-			{
-				for (Eigen::SparseMatrix<double>::InnerIterator it(globK,k); it; ++it)
-				{
-					for (unsigned i=0; i<indices.size(); ++i)
-					{
-						if (it.row() == indices[i])
-						{
-							it.valueRef() = it.row() == it.col() ? model_->materials.back()->getYoung() : 0.0;
-						}
-					}
-				}
+            if (static_cast<int>((*constraint)->type) & static_cast<int>(DisplacementConstraintType::UX))
+            {
+                std::vector<int> region = ((*constraint)->region);
+                for (unsigned int i=0; i<region.size(); ++i)
+                {
+                    region[i] *= 2;
+                    region[i] += 0;
+                }
+                indices.insert(indices.end(),region.begin(),region.end());
+                std::vector<double> value(region.size(),((*constraint)->value[0])*dispFactor);
+                values.insert(values.end(),value.begin(),value.end());
+            }
 
-			}
+            if (static_cast<int>((*constraint)->type) & static_cast<int>(DisplacementConstraintType::UY))
+            {
+                std::vector<int> region = ((*constraint)->region);
+                for (unsigned int i=0; i<region.size(); ++i)
+                {
+                    region[i] *= 2;
+                    region[i] += 1;
+                }
+                indices.insert(indices.end(),region.begin(),region.end());
+                std::vector<double> value(region.size(),((*constraint)->value[1])*dispFactor);
+                values.insert(values.end(),value.begin(),value.end());
+            }
 
-			for (unsigned i=0; i<indices.size(); ++i)
-			{
-				force(indices[i]) = values[i]*model_->materials.back()->getYoung();
-			}
+            for (unsigned k=0; k<globK.outerSize(); ++k)
+            {
+                for (Eigen::SparseMatrix<double>::InnerIterator it(globK,k); it; ++it)
+                {
+                    for (unsigned i=0; i<indices.size(); ++i)
+                    {
+                        if (it.row() == indices[i])
+                        {
+                            it.valueRef() = it.row() == it.col() ? model_->materials.back()->getYoung() : 0.0;
+                        }
+                    }
+                }
 
-		}
+            }
 
-		SparseLU<SparseMatrix<double>> linearEquationsSolver(globK);
-		VectorXd sol = linearEquationsSolver.solve(force);
+            for (unsigned i=0; i<indices.size(); ++i)
+            {
+                force(indices[i]) = values[i]*model_->materials.back()->getYoung();
+            }
 
-		du = sol;
-		u += du;
+        }
 
-//		std::cout << u << std::endl;
-//		std::cout << std::endl;
+        SparseLU<SparseMatrix<double>> linearEquationsSolver(globK);
+        VectorXd sol = linearEquationsSolver.solve(force);
 
-		OdbFrame* frame = odb_->getStep(Constant::LAST)->createFrame();
+        du = sol;
+        u += du;
 
-		FieldType field = FieldType::U;
-		std::vector<double> data(u.data(), u.data() + u.rows());
+//        std::cout << u << std::endl;
+//        std::cout << std::endl;
 
-		FieldOutput* fieldOutput = new FieldOutput(FieldType::U, data);
+        OdbFrame* frame = odb_->getStep(Constant::LAST)->createFrame();
 
-		frame->addFieldOutput(fieldOutput);
+        FieldType field = FieldType::U;
+        std::vector<double> data(u.data(), u.data() + u.rows());
 
-		flag10=1;
+        FieldOutput* fieldOutput = new FieldOutput(FieldType::U, data);
 
-	}
+        frame->addFieldOutput(fieldOutput);
+
+        flag10=1;
+
+    }
 
 }
 
@@ -275,97 +279,101 @@ LinearSolver::solve()
 SparseMatrix<double> LinearSolver::calcGlobK() const
 {
 
-	Mesh* mesh = model_->parts[0]->mesh;
-	int numNodes = mesh->nodes.size();
+    Mesh* mesh = model_->parts[0]->mesh;
+    int numNodes = mesh->nodes.size();
 
-	std::cout.precision(2);
-	std::cout.setf(std::ios::showpos);
-	std::cout.setf(std::ios::scientific);
+    std::cout.precision(2);
+    std::cout.setf(std::ios::showpos);
+    std::cout.setf(std::ios::scientific);
 
-	std::vector<T> triplets;
+    std::vector<T> triplets;
 
-	int* connect;
-	double* coord;
-	Matrix<double,2,4> nodesCoordGlob;
+    int*    connect;
+    double* coord;
+    int     nodesPerElement;
+    Matrix<double,2,4> nodesCoordGlob;
 
-	int k,l;
+    int k,l;
 
-	Matrix<double,2,2> locK;
+    Matrix<double,2,2> locK;
 
-	for (auto it = (mesh->elements).begin(); it < (mesh->elements).end(); it++)
-	{
-		connect = (*it)->getConnect();
+    for (auto it = (mesh->elements).begin(); it < (mesh->elements).end(); it++)
+    {
+        connect         = (*it)->getConnect();
+        nodesPerElement = (*it)->getType()->getNodesNum();
 
-		for (int i=0; i<(*it)->type()->getNodesNum(); i++)
-		{
-			coord = (mesh->nodes)[connect[i]]->getCoord();
-			nodesCoordGlob(0,i) = coord[0];
-			nodesCoordGlob(1,i) = coord[1];
-		}
 
-		for (int i=0; i<(*it)->type()->getNodesNum(); i++)
-		{
-			k = connect[i];
-			for (int j=0; j<(*it)->type()->getNodesNum(); j++)
-			{
-				l = connect[j];
-				locK = (*it)->type()->calcLocK(i, j, nodesCoordGlob);
 
-				triplets.push_back(T(2*k  ,2*l  ,locK(0,0)));
-				triplets.push_back(T(2*k  ,2*l+1,locK(0,1)));
-				triplets.push_back(T(2*k+1,2*l  ,locK(1,0)));
-				triplets.push_back(T(2*k+1,2*l+1,locK(1,1)));
+        for (int i = 0; i < nodesPerElement; i++)
+        {
+            coord = (mesh->nodes)[connect[i]]->getCoord();
+            nodesCoordGlob(0,i) = coord[0];
+            nodesCoordGlob(1,i) = coord[1];
+        }
 
-			}
-		}
-	}
+        for (int i = 0; i < nodesPerElement; i++)
+        {
+            k = connect[i];
+            for (int j = 0; j < nodesPerElement; j++)
+            {
+                l = connect[j];
+                locK = (*it)->getType()->calcLocK(i, j, nodesCoordGlob);
 
-	SparseMatrix<double> globK(2*numNodes, 2*numNodes);
+                triplets.push_back(T(2*k  ,2*l  ,locK(0,0)));
+                triplets.push_back(T(2*k  ,2*l+1,locK(0,1)));
+                triplets.push_back(T(2*k+1,2*l  ,locK(1,0)));
+                triplets.push_back(T(2*k+1,2*l+1,locK(1,1)));
 
-	globK.setFromTriplets(triplets.begin(), triplets.end());
+            }
+        }
+    }
 
-//	globK.makeCompressed();
+    SparseMatrix<double> globK(2*numNodes, 2*numNodes);
 
-//	std::cout << globK << std::endl;
+    globK.setFromTriplets(triplets.begin(), triplets.end());
 
-	return globK;
+//    globK.makeCompressed();
+
+//    std::cout << globK << std::endl;
+
+    return globK;
 }
 
 
 void LinearSolver::updateForce(VectorXd &u, VectorXd &force) const
 {
-	Mesh* mesh = model_->parts[0]->mesh;
+    Mesh* mesh = model_->parts[0]->mesh;
 
-	for (auto it = (mesh->elements).begin(); it < (mesh->elements).end(); it++)
-	{
-		int* connect = (*it)->getConnect();
+    for (auto it = (mesh->elements).begin(); it < (mesh->elements).end(); it++)
+    {
+        int* connect = (*it)->getConnect();
 
-		Matrix<double,2,4> nodesCoordGlob;
-		VectorXd uLoc(8);
-		VectorXd forceLoc(8);
-		for (int i=0; i<(*it)->type()->getNodesNum(); i++)
-		{
-			double* coord = (mesh->nodes)[connect[i]]->getCoord();
-			nodesCoordGlob(0,i) = coord[0];
-			nodesCoordGlob(1,i) = coord[1];
+        Matrix<double,2,4> nodesCoordGlob;
+        VectorXd uLoc(8);
+        VectorXd forceLoc(8);
+        for (int i=0; i<(*it)->getType()->getNodesNum(); i++)
+        {
+            double* coord = (mesh->nodes)[connect[i]]->getCoord();
+            nodesCoordGlob(0,i) = coord[0];
+            nodesCoordGlob(1,i) = coord[1];
 
-			uLoc(2*i  ) = u(2*connect[i]  );
-			uLoc(2*i+1) = u(2*connect[i]+1);
+            uLoc(2*i  ) = u(2*connect[i]  );
+            uLoc(2*i+1) = u(2*connect[i]+1);
 
-			forceLoc(2*i  ) = force(2*connect[i]  );
-			forceLoc(2*i+1) = force(2*connect[i]+1);
-		}
+            forceLoc(2*i  ) = force(2*connect[i]  );
+            forceLoc(2*i+1) = force(2*connect[i]+1);
+        }
 
-		(*it)->type()->updateForce(nodesCoordGlob, uLoc, forceLoc);
+        (*it)->getType()->updateForce(nodesCoordGlob, uLoc, forceLoc);
 
-		// Updating the global force
-		for (int i=0; i<(*it)->type()->getNodesNum(); i++)
-		{
-			force(2*connect[i]  ) = forceLoc(2*i  );
-			force(2*connect[i]+1) = forceLoc(2*i+1);
-		}
+        // Updating the global force
+        for (int i=0; i<(*it)->getType()->getNodesNum(); i++)
+        {
+            force(2*connect[i]  ) = forceLoc(2*i  );
+            force(2*connect[i]+1) = forceLoc(2*i+1);
+        }
 
-	}
+    }
 
 }
 
@@ -377,39 +385,39 @@ void LinearSolver::updateForce(VectorXd &u, VectorXd &force) const
 
 void LinearSolver::update(VectorXd &u, MatrixXd &sigma, VectorXd &force) const
 {
-	Mesh* mesh = model_->parts[0]->mesh;
+    Mesh* mesh = model_->parts[0]->mesh;
 
-	for (auto it = (mesh->elements).begin(); it < (mesh->elements).end(); it++)
-	{
-		int* connect = (*it)->getConnect();
+    for (auto it = (mesh->elements).begin(); it < (mesh->elements).end(); it++)
+    {
+        int* connect = (*it)->getConnect();
 
-		Matrix<double,2,4> nodesCoordGlob;
-		VectorXd uLoc(8);
-		VectorXd forceLoc(8);
-		for (int i=0; i<(*it)->type()->getNodesNum(); i++)
-		{
-			double* coord = (mesh->nodes)[connect[i]]->getCoord();
-			nodesCoordGlob(0,i) = coord[0];
-			nodesCoordGlob(1,i) = coord[1];
+        Matrix<double,2,4> nodesCoordGlob;
+        VectorXd uLoc(8);
+        VectorXd forceLoc(8);
+        for (int i=0; i<(*it)->getType()->getNodesNum(); i++)
+        {
+            double* coord = (mesh->nodes)[connect[i]]->getCoord();
+            nodesCoordGlob(0,i) = coord[0];
+            nodesCoordGlob(1,i) = coord[1];
 
-			uLoc(2*i  ) = u(2*connect[i]  );
-			uLoc(2*i+1) = u(2*connect[i]+1);
+            uLoc(2*i  ) = u(2*connect[i]  );
+            uLoc(2*i+1) = u(2*connect[i]+1);
 
-			forceLoc(2*i  ) = force(2*connect[i]  );
-			forceLoc(2*i+1) = force(2*connect[i]+1);
-		}
+            forceLoc(2*i  ) = force(2*connect[i]  );
+            forceLoc(2*i+1) = force(2*connect[i]+1);
+        }
 
-		Eigen::MatrixXd sigmaLoc(3,8);
+        Eigen::MatrixXd sigmaLoc(3,8);
 
-		(*it)->type()->update(nodesCoordGlob, uLoc, sigmaLoc, forceLoc);
+        (*it)->getType()->update(nodesCoordGlob, uLoc, sigmaLoc, forceLoc);
 
-		// Updating the global force
-		for (int i=0; i<(*it)->type()->getNodesNum(); i++)
-		{
-			force(2*connect[i]  ) = forceLoc(2*i  );
-			force(2*connect[i]+1) = forceLoc(2*i+1);
-		}
+        // Updating the global force
+        for (int i=0; i<(*it)->getType()->getNodesNum(); i++)
+        {
+            force(2*connect[i]  ) = forceLoc(2*i  );
+            force(2*connect[i]+1) = forceLoc(2*i+1);
+        }
 
-	}
+    }
 
 }

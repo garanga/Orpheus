@@ -7,23 +7,34 @@
 
 #include "Constraint.hpp"
 
-Constraint::Constraint(std::string myName, std::vector<int> myRegion, DisplacementConstraintType myType, double* myValue)
+Constraint::Constraint(std::string myName               ,
+                       std::vector<int> myRegion        ,
+                       DisplacementConstraintType myType,
+                       double* myValue                  )
 {
-	mName = myName;
-	type = myType;
-	region = myRegion;
-	value = myValue;
+    mName = myName;
+    type = myType;
+    region = myRegion;
+    value = myValue;
+}
 
-//	std::cout << std::endl;
-//	std::cout << mValue[0] << "   " << mValue[1] << std::endl;
-//	std::cout << mRegion[0] << std::endl;
-//	std::cout << std::endl;
+Constraint::Constraint(const Constraint& constraint)
+{
+    mName  = constraint.mName;
+    type   = constraint.type;
+    region = std::vector<int>(constraint.region);
+
+    value = new double[2];
+
+    value[0] = constraint.value[0];
+    value[1] = constraint.value[1];
 
 }
 
 Constraint::~Constraint()
 {
-
+    if (value != nullptr)
+        delete [] value;
 }
 
 

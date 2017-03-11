@@ -32,6 +32,4 @@ double* Node::getCoord() const
     return mCoord;
 }
 
-
-
 #endif /* NODE_CPP_ */

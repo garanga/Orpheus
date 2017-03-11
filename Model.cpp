@@ -113,3 +113,13 @@ Part* Model::getPart(std::string name)
               });
     return *it;
 }
+
+StaticStep* Model::getStatciStep(std::string name)
+{
+    auto it = std::find_if(steps.begin(),steps.end(),
+              [&name](StaticStep* step)
+              {
+                     return step->getName() == name;
+              });
+    return *it;
+}

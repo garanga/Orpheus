@@ -13,31 +13,74 @@
 
 StaticStep::StaticStep(std::string myName,
                        double myTimeBegin,
-					   double myTimeEnd,
-					   double myTimeIncrement,
-					   double myLoadFactorBegin,
-					   double myLoadFactorEnd)
-	: Step(myName),
-	  timeBegin(myTimeBegin), timeEnd(myTimeEnd), timeIncrement(myTimeIncrement), loadFactorBegin(myLoadFactorBegin), loadFactorEnd(myLoadFactorEnd)
+                       double myTimeEnd,
+                       double myTimeIncrement,
+                       double myLoadFactorBegin,
+                       double myLoadFactorEnd)
+    : Step(myName),
+      timeBegin(myTimeBegin),
+      timeEnd(myTimeEnd),
+      timeIncrement(myTimeIncrement),
+      loadFactorBegin(myLoadFactorBegin),
+      loadFactorEnd(myLoadFactorEnd)
 {
 
 }
 
 StaticStep::~StaticStep()
 {
-
+    for (auto it = loads.begin(); it != loads.end(); ++it)
+        delete *it;
+    for (auto it = constraints.begin(); it != constraints.end(); ++it)
+        delete *it;
 }
 
-DisplacementConstraint* StaticStep::CreateDispacementConstraint(std::string myName, std::vector<int> myRegion, DisplacementConstraintType myType, double* myValue)
+void StaticStep::CopyConstraints(StaticStep& step)
 {
-	DisplacementConstraint* displacementConstraint = new DisplacementConstraint(myName, myRegion, myType, myValue);
-	constraints.push_back(displacementConstraint);
-	return displacementConstraint;
+    Constraint *tmp;
+    for (auto it  = step.constraints.begin();
+              it != step.constraints.end(); ++it)
+    {
+        tmp = new Constraint(*(*it));
+        constraints.push_back(tmp);
+    }
+    tmp = nullptr;
 }
 
-ConcentratedLoad* StaticStep::CreateConcentratedLoad(std::string myName, std::vector<int> myRegion, ConcentratedLoadType myType, double* myValue)
+void StaticStep::CopyLoads(StaticStep& step)
 {
-	ConcentratedLoad* concentratedLoad = new ConcentratedLoad(myName, myRegion, myType, myValue);
-	loads.push_back(concentratedLoad);
-	return concentratedLoad;
+    Load *tmp;
+    for (auto it  = step.loads.begin();
+              it != step.loads.end(); ++it)
+    {
+        tmp = new Load(*(*it));
+        loads.push_back(tmp);
+    }
+    tmp = nullptr;
+}
+
+DisplacementConstraint*
+StaticStep::CreateDisplacementConstraint(std::string myName               ,
+                                         std::vector<int> myRegion        ,
+                                         DisplacementConstraintType myType,
+                                         double* myValue                  )
+{
+    auto displacementConstraint = new DisplacementConstraint(myName  ,
+                                                             myRegion,
+                                                             myType  ,
+                                                             myValue );
+    constraints.push_back(displacementConstraint);
+    return displacementConstraint;
+}
+
+ConcentratedLoad*
+StaticStep::CreateConcentratedLoad(std::string myName         ,
+                                   std::vector<int> myRegion  ,
+                                   ConcentratedLoadType myType,
+                                   double* myValue            )
+{
+    auto concentratedLoad = new ConcentratedLoad(myName, myRegion,
+                                                 myType, myValue );
+    loads.push_back(concentratedLoad);
+    return concentratedLoad;
 }

@@ -11,6 +11,7 @@
 
 #include "Node.hpp"
 #include "Element.hpp"
+#include "ElementEdge.hpp"
 #include "Part.hpp"
 
 Mesh::Mesh()

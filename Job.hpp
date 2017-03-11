@@ -18,20 +18,20 @@ class Job
 
 public:
 
-	Job(std::string name, Model* model);
+    Job(std::string name, Model* model);
    ~Job();
 
     std::string
-	getName() const;
+    getName() const;
 
-	Odb*
-	Submit();
+    Odb*
+    Submit();
 
 private:
 
-	std::string name_;
-	Model*      model_;
-	Odb*        odb_;
+    std::string name_;
+    Model*      model_;
+    Odb*        odb_;
 
 };
 

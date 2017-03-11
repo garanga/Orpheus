@@ -19,11 +19,11 @@ class ConcentratedLoad : public Load
 {
 
 public:
-	// Specialized constructor
-	ConcentratedLoad(std::string myName, std::vector<int> myRegion, ConcentratedLoadType myType, double* myValue);
-
-	// Virtual destructor
-	virtual ~ConcentratedLoad();
+    // Specialized constructor
+    ConcentratedLoad(std::string myName         , std::vector<int> myRegion,
+                     ConcentratedLoadType myType, double* myValue          );
+    // Virtual destructor
+    virtual ~ConcentratedLoad();
 
 };
 

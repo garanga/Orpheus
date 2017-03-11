@@ -11,7 +11,10 @@
 
 #include <iostream>
 
-DisplacementConstraint::DisplacementConstraint(std::string myName, std::vector<int> myRegion, DisplacementConstraintType myType, double* myValue)
+DisplacementConstraint::DisplacementConstraint(std::string myName             ,
+                                             std::vector<int> myRegion        ,
+                                             DisplacementConstraintType myType,
+                                             double* myValue                  )
 	: Constraint(myName, myRegion, myType, myValue)
 {
 
