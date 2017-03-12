@@ -14,16 +14,17 @@ class Element
 {
 
 public:
-
+    Element();
     explicit Element(int, int*, ElementType*);
     ~Element();
+
+    void         setConnect(int*);
 
     int          getId() const;
     int*         getConnect() const;
     ElementType* getType() const;
 
 private:
-
     int          mId;
     int*         mConnectivity; // Array
     ElementType* mType;

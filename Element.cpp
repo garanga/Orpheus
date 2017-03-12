@@ -9,9 +9,16 @@
 
 #include "ElementLib/ElementType.hpp"
 
+Element::Element()
+{
+    mId           = -1;
+    mConnectivity = nullptr;
+    mType         = nullptr;
+}
+
 Element::Element(int myId, int* myConnectivity, ElementType* myType)
 {
-     mId           =  myId;
+     mId           = myId;
      mConnectivity = myConnectivity;
      mType         = myType;
 }
@@ -22,6 +29,14 @@ Element::~Element()
         delete [] mConnectivity;
     if (mType != nullptr)
         delete mType;
+}
+
+void Element::setConnect(int* connectivity)
+{
+    if (mConnectivity != nullptr)
+        delete [] mConnectivity;
+
+    mConnectivity = connectivity;
 }
 
 int Element::getId() const

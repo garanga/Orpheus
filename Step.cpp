@@ -9,8 +9,8 @@
 
 #include <vector>
 
-Step::Step(std::string name_)
-	: name(name_)
+Step::Step(std::string mName_)
+    : mName(mName_)
 {
 
 }
@@ -20,28 +20,25 @@ Step::~Step()
 
 }
 
-void
-Step::addFieldOutputRequest(FieldType fieldType_)
+void Step::addOutputRequest(OutputSymbols fieldType)
 {
-	fieldOutputRequest.push_back(fieldType_);
+    mOutputRequest.push_back(fieldType);
 }
 
-void
-Step::addFieldOutputRequest(std::vector<FieldType> fieldTypes_)
+void Step::addOutputRequest(std::vector<OutputSymbols> fieldTypes)
 {
-	fieldOutputRequest.insert(fieldOutputRequest.end(),
-			                  fieldTypes_.begin(), fieldTypes_.end());
+    mOutputRequest.insert(mOutputRequest.end(), fieldTypes.begin(),
+                              fieldTypes.end());
 }
 
-std::string
-Step::getName() const
+std::string Step::getName() const
 {
-	return name;
+    return mName;
 }
 
-std::vector<FieldType> Step::getFieldOutputRequest() const
+std::vector<OutputSymbols> Step::getOutputRequest() const
 {
-	return fieldOutputRequest;
+    return mOutputRequest;
 }
 
 

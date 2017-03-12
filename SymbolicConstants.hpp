@@ -37,22 +37,31 @@ enum class  Constant
 	LAST
 };
 
-enum class FieldType
-{
-	UX	=  1,
-	UY	=  2,
-	UZ	=  3,
-	SX	=  4,
-	SY	=  5,
-	SZ	=  6,
-	SYZ	=  7,
-	SXZ	=  8,
-	SXY	=  9,
-	U 	= 10
-};
 
 enum class ElementTypeEnum
 {
     P4
+};
+
+enum class FileCodes
+{
+    MODELNAME,
+    PARTNAME,
+    DIMENSION,
+    NODESPERELEMENT,
+    NODES,
+    ELEMENTS,
+    STEP,
+    FRAME,
+    ENDOFFILE
+};
+
+enum class OutputSymbols
+{
+    OUTPUTEND = 0,
+    U = 1,
+    S = 2,
+    E = 3,
+    T = 4
 };
 #endif /* SYMBOLICCONSTANTS_HPP_ */

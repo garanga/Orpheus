@@ -8,32 +8,26 @@
 #ifndef STEP_HPP_
 #define STEP_HPP_
 
-
 #include <string>
 #include <vector>
 
-enum class FieldType;
+enum class OutputSymbols;
 
 class Step
 {
-
 public:
+    Step(std::string);
+    virtual ~Step();
 
-	Step(std::string);
+    void addOutputRequest(OutputSymbols);
+    void addOutputRequest(std::vector<OutputSymbols>);
 
-	virtual ~Step();
-
-	void addFieldOutputRequest(FieldType);
-	void addFieldOutputRequest(std::vector<FieldType>);
-
-	std::string getName() const;
-	std::vector<FieldType> getFieldOutputRequest() const;
+    std::string                getName() const;
+    std::vector<OutputSymbols> getOutputRequest() const;
 
 private:
-
-	std::string name;
-	std::vector<FieldType> fieldOutputRequest;
-
+    std::string                mName;
+    std::vector<OutputSymbols> mOutputRequest;
 };
 
 

@@ -10,28 +10,42 @@
 
 
 #include <string>
+#include <map>
 
+class Load;
+class Constraint;
+class Step;
 class Model;
-class Odb;
+class ODB;
 
 #include "Eigen/Sparse"
+#include "Eigen/Dense"
 
 class LinearSolver
 {
-
 public:
-    LinearSolver(Model*, Odb*);
+    explicit LinearSolver(Model*, std::map<std::string, ODB>&);
     ~LinearSolver();
 
     void solve();
 
 private:
+    Model*                        mModel;
+    std::map<std::string, ODB>&   mPartODBMap;
 
-    Model* model_;
-    Odb*   odb_;
+    void applyLoads(std::vector<Load*>&, Eigen::VectorXd&, const double&);
+    void applyConstraints(std::vector<Constraint*>&   ,
+                          Eigen::SparseMatrix<double>&,
+                          Eigen::VectorXd&            ,
+                          const double&               );
 
-    void update(Eigen::VectorXd &u, Eigen::MatrixXd &sigma, Eigen::VectorXd & force) const;
+    void fillOutput(ODB&, Eigen::VectorXd&, Step*);
+
+    void update(Eigen::VectorXd &u     , Eigen::MatrixXd &sigma,
+                Eigen::VectorXd & force                        ) const;
+
     Eigen::SparseMatrix<double> calcGlobK() const;
+
     void updateForce(Eigen::VectorXd &u, Eigen::VectorXd &force) const;
 
 };

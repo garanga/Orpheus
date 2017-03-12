@@ -11,8 +11,11 @@
 class Node
 {
 public:
+    Node();
     explicit Node(int myId, double* myCoord);
     ~Node();
+
+    void    setCoord(double*);
 
     int     getId() const;
     double* getCoord() const;

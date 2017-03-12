@@ -5,7 +5,7 @@
 #include <vector>
 
 #include <Eigen/Dense>
-/*
+
 int main(int argc, char* argv[])
 {
 	// Model database
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
 //	step1 = dynamic_cast<StaticStep*>(model->CreateStaticStep("Step-1", 0.0, 0.5, 0.1, 0.0, 0.5));
 	step1 = model->createStaticStep("Step-1", 0.0, 0.5, 0.1, 0.0, 0.5);
 
-	step1->addFieldOutputRequest(FieldType::U);
+	step1->addOutputRequest(OutputSymbols::U);
 	{
 		std::vector<int> region;
 		double* value;
@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
 //	step2 = dynamic_cast<StaticStep*>(model->CreateStaticStep("Step-2", 0.5, 1.0, 0.1, 0.5, 1.0));
 	step2 = model->createStaticStep("Step-2", 0.5, 1.0, 0.1, 0.5, 1.0);
 
-	step2->addFieldOutputRequest(FieldType::U);
+	step2->addOutputRequest(OutputSymbols::U);
 
 	{
 		std::vector<int> region;
@@ -181,6 +181,7 @@ int main(int argc, char* argv[])
 	time(&time1);
 
 	job->Submit();
+	job->saveODB();
 
 
 	time_t time2;
@@ -193,12 +194,16 @@ int main(int argc, char* argv[])
 
 	return 0;
 
-}*/
+}
+
+
+
+
+/*
 
 int main()
 {
     std::string modelName = "Model_1";
-    std::string  bodyName = "Body_1";
     std::string  partName = "Part_1";
     std::string materName = "Iso_1";
     std::string   jobName = "Job_1";
@@ -208,19 +213,7 @@ int main()
 
     testMdb->createModel(modelName);
     Model *currentModel = testMdb->getModel(modelName);
-/*
-    currentModel->createBody(bodyName);
-    // What the point?
-    currentModel->getBody(bodyName)->addPoint(-5.0,-5.0);  // 0
-    currentModel->getBody(bodyName)->addPoint( 5.0,-5.0);  // 1
-    currentModel->getBody(bodyName)->addPoint( 5.0, 5.0);  // 2
-    currentModel->getBody(bodyName)->addPoint(-5.0, 5.0);  // 3
 
-    currentModel->getBody(bodyName)->addLine(0,1);         // 0
-    currentModel->getBody(bodyName)->addLine(1,2);         // 1
-    currentModel->getBody(bodyName)->addLine(2,3);         // 2
-    currentModel->getBody(bodyName)->addLine(3,0);         // 3
-*/
     // Create part
     currentModel->createPart(partName);
 
@@ -243,6 +236,9 @@ int main()
 
     currentModel->createStaticStep("Step-1", 0.0, 0.5, 0.1, 0.0, 0.5);
     StaticStep *currentStep = currentModel->getStatciStep("Step-1");
+
+    // Set Output type
+    currentStep->addOutputRequest(OutputSymbols::U);
 
     std::vector<int> region;
     double *constraintValue;
@@ -306,6 +302,8 @@ int main()
     // Copy loads and constraints from previous step
     currentStep->CopyConstraints(*(currentModel->getStatciStep("Step-1")));
     currentStep->CopyLoads(*(currentModel->getStatciStep("Step-1")));
+    // Set Output type
+    currentStep->addOutputRequest(OutputSymbols::U);
 
     testMdb->createJob(jobName, currentModel);
 
@@ -313,6 +311,7 @@ int main()
     time(&time1);
 
     testMdb->getJob(jobName)->Submit();
+    testMdb->getJob(jobName)->saveODB();
 
 
     time_t time2;
@@ -329,3 +328,4 @@ int main()
     return 0;
 }
 
+*/

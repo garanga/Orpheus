@@ -9,30 +9,29 @@
 #define JOB_HPP_
 
 #include <string>
+#include <map>
 
 class Model;
-class Odb;
+class ODB;
 
 class Job
 {
-
 public:
-
     Job(std::string name, Model* model);
    ~Job();
 
-    std::string
-    getName() const;
+    std::string  getName() const;
+    ODB*         getODB()  const;
 
-    Odb*
-    Submit();
+    void saveODB();
+
+    void Submit();
 
 private:
-
-    std::string name_;
-    Model*      model_;
-    Odb*        odb_;
-
+    std::string                mName;
+    Model*                     mModel;
+    ODB*                       mODB;
+    std::map<std::string, ODB> mPartODBs;
 };
 
 

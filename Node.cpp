@@ -10,6 +10,12 @@
 
 #include "Node.hpp"
 
+Node::Node()
+{
+    mId    = -1;
+    mCoord = nullptr;
+}
+
 Node::Node(int myId, double* myCoord)
 {
     mId    = myId;
@@ -20,6 +26,14 @@ Node::~Node()
 {
     if (mCoord != nullptr)
         delete [] mCoord;
+}
+
+void Node::setCoord(double* coords)
+{
+    if (mCoord != nullptr)
+        delete [] mCoord;
+
+    mCoord = coords;
 }
 
 int Node::getId() const
