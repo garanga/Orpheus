@@ -59,7 +59,7 @@ void ODBFrame::fileStreamWrite(std::ofstream& fout, int dim)
         {
         case (int)OutputSymbols::U :
         {
-            for (unsigned int i = 0; i < it->second.size(); i += 3)
+            for (unsigned int i = 0; i < it->second.size(); i += dim)
             {
                 for (int j = 0; j < dim; ++j)
                 {
