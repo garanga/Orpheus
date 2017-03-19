@@ -7,7 +7,10 @@
 
 #include "Load.hpp"
 
-Load::Load(std::string myName, std::vector<int> myRegion, ConcentratedLoadType myType, double* myValue)
+Load::Load(std::string                         myName  ,
+        std::vector<int>                       myRegion,
+        OrpheusConstants::ConcentratedLoadType myType  ,
+        double*                                myValue )
 {
     mName  = myName;
     type   = myType;

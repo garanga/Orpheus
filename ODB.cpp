@@ -56,14 +56,18 @@ std::map<std::string, std::vector<ODBFrame>>& ODB::getFramesMap()
 
 bool ODB::saveToFile(std::ofstream& fout, std::string path)
 {
-    fout << (int)FileCodes::MODELNAME << "\n" << mModelName << std::endl;
-    fout << (int)FileCodes::PARTNAME  << "\n" << mPartName  << std::endl;
-    fout << (int)FileCodes::DIMENSION << "\n" << mDim << std::endl;
-    fout << (int)FileCodes::NODESPERELEMENT << "\n"
+    fout << (int)OrpheusConstants::FileCodes::MODELNAME;
+    fout << "\n" << mModelName << std::endl;
+    fout << (int)OrpheusConstants::FileCodes::PARTNAME;
+    fout << "\n" << mPartName  << std::endl;
+    fout << (int)OrpheusConstants::FileCodes::DIMENSION;
+    fout << "\n" << mDim << std::endl;
+    fout << (int)OrpheusConstants::FileCodes::NODESPERELEMENT << "\n"
          << mNodesPerElement << std::endl;
 
 
-    fout << (int)FileCodes::NODES << "\n" << mNodes->size() << "\n";
+    fout << (int)OrpheusConstants::FileCodes::NODES;
+    fout << "\n" << mNodes->size() << "\n";
     double *tmp_coords;
     for (unsigned int i = 0; i < mNodes->size(); i++)
     {
@@ -74,7 +78,8 @@ bool ODB::saveToFile(std::ofstream& fout, std::string path)
     }
     tmp_coords = nullptr;
 
-    fout << (int)FileCodes::ELEMENTS << "\n" << mElements->size() << "\n";
+    fout << (int)OrpheusConstants::FileCodes::ELEMENTS;
+    fout << "\n" << mElements->size() << "\n";
     int *tmp_connectivity;
     for (unsigned int i = 0; i < mElements->size(); i++)
     {
@@ -87,16 +92,17 @@ bool ODB::saveToFile(std::ofstream& fout, std::string path)
 
     for (auto it = mFramesMap.begin(); it != mFramesMap.end(); ++it)
     {
-        fout << (int)FileCodes::STEP << "\n" << it->first << std::endl;
+        fout << (int)OrpheusConstants::FileCodes::STEP;
+        fout << "\n" << it->first << std::endl;
         for (auto it_frame  = it->second.begin();
                   it_frame != it->second.end()  ; ++it_frame)
         {
-            fout << (int)FileCodes::FRAME << std::endl;
+            fout << (int)OrpheusConstants::FileCodes::FRAME << std::endl;
             it_frame->fileStreamWrite(fout, mDim);
         }
     }
 
-    fout << (int)FileCodes::ENDOFFILE;
+    fout << (int)OrpheusConstants::FileCodes::ENDOFFILE;
 
     return true;
 }

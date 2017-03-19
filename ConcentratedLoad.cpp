@@ -13,7 +13,7 @@
 
 ConcentratedLoad::ConcentratedLoad(std::string myName         ,
                                    std::vector<int> myRegion  ,
-                                   ConcentratedLoadType myType,
+                 OrpheusConstants::ConcentratedLoadType myType,
                                    double* myValue            )
 	: Load(myName, myRegion, myType, myValue)
 {

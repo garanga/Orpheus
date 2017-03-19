@@ -22,7 +22,7 @@ public:
     void setFieldOutput(FieldOutput&);
 
     ScalarOutput& getScalarOutput();
-    FieldOutput& getFieldOutput();
+    FieldOutput&  getFieldOutput();
 
     void printData(int);
 

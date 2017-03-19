@@ -13,15 +13,15 @@
 
 #include "Load.hpp"
 
-enum class ConcentratedLoadType;
-
 class ConcentratedLoad : public Load
 {
 
 public:
     // Specialized constructor
-    ConcentratedLoad(std::string myName         , std::vector<int> myRegion,
-                     ConcentratedLoadType myType, double* myValue          );
+    ConcentratedLoad(std::string myName                           ,
+                     std::vector<int> myRegion                    ,
+                     OrpheusConstants::ConcentratedLoadType myType,
+                     double* myValue                              );
     // Virtual destructor
     virtual ~ConcentratedLoad();
 

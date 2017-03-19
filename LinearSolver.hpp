@@ -48,6 +48,9 @@ private:
 
     void updateForce(Eigen::VectorXd &u, Eigen::VectorXd &force) const;
 
+    void checkLoads(std::vector<Load*>&, std::string);
+    void checkConstraints(std::vector<Constraint*>&, std::string);
+
 };
 
 

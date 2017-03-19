@@ -62,7 +62,7 @@ void StaticStep::CopyLoads(StaticStep& step)
 DisplacementConstraint*
 StaticStep::CreateDisplacementConstraint(std::string myName               ,
                                          std::vector<int> myRegion        ,
-                                         DisplacementConstraintType myType,
+                       OrpheusConstants::DisplacementConstraintType myType,
                                          double* myValue                  )
 {
     auto displacementConstraint = new DisplacementConstraint(myName  ,
@@ -76,7 +76,7 @@ StaticStep::CreateDisplacementConstraint(std::string myName               ,
 ConcentratedLoad*
 StaticStep::CreateConcentratedLoad(std::string myName         ,
                                    std::vector<int> myRegion  ,
-                                   ConcentratedLoadType myType,
+                 OrpheusConstants::ConcentratedLoadType myType,
                                    double* myValue            )
 {
     auto concentratedLoad = new ConcentratedLoad(myName, myRegion,

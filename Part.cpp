@@ -12,13 +12,6 @@
 #include <iostream>
 #include <fstream>
 
-//! A test class
-/*!
- *
- * A more detailed description
- *
- */
-
 Part::Part(std::string name)
     : mName(name)
 {
@@ -60,25 +53,26 @@ void Part::setMaterial(Material* material)
     mMaterial = material;
 }
 
-void Part::setElementType(ElementTypeEnum elementType, bool isPlaneStrain)
+void Part::setElementType(OrpheusConstants::ElementTypeEnum elementType,
+                          bool isPlaneStrain)
 {
     if (mMaterial == nullptr)
     {
-        // Exception NOMATERIAL
-        std::cout << "material don't set" << std::endl;
-        return;
+        throw except::Exception(OrpheusConstants::ExceptionType::NOMATERIAL,
+                                "No material specified");
     }
+
     switch(static_cast<int>(elementType))
     {
-    case static_cast<int>(ElementTypeEnum::P4) :
+    case static_cast<int>(OrpheusConstants::ElementTypeEnum::P4) :
     {
         mElementType = new P4(mMaterial, isPlaneStrain);
         break;
     }
     default:
     {
-        // Exception UNKKNOWNELEMENTTYPE
-        std::cout << "Unknown element type" << std::endl;
+        throw except::Exception(OrpheusConstants::ExceptionType::UNKNELEMTYPE,
+                                "Unknown element type");
         break;
     }
     }
@@ -87,18 +81,36 @@ void Part::setElementType(ElementTypeEnum elementType, bool isPlaneStrain)
 
 void Part::CreateMesh(bool writeMesh)
 {
-    if (mElementType == nullptr)
-    {
-        // Exception ELEMENTUNDEFINED
-        std::cout << "Element type doesn't set" << std::endl;
-        return;
-    }
     CreateMesh(mElementType, writeMesh);
 }
 
 void Part::CreateMesh(ElementType* type, bool writeMesh)
 {
     mesh = new Mesh;
+
+    if (mElementType == nullptr)
+    {
+        throw except::Exception(OrpheusConstants::ExceptionType::NOELEMTYPE,
+                                "Element type not specified");
+    }
+
+    if (mSizes == nullptr)
+    {
+        std::string message("Sizes of part <");
+        message += mName;
+        message += "> doens't set!";
+        throw except::Exception(OrpheusConstants::ExceptionType::NOSIZES,
+                                message);
+    }
+
+    if (mDivisions == nullptr)
+    {
+        std::string message("Divisions of part <");
+        message += mName;
+        message += "> doens't set!";
+        throw except::Exception(OrpheusConstants::ExceptionType::NODIVISIONS,
+                                message);
+    }
 
     int cnt = 0;
 
@@ -171,7 +183,7 @@ void Part::CreateMesh(ElementType* type, bool writeMesh)
     }
     std::cout << "The mesh is created on part '" << mName << "'" << std::endl;
     std::cout << "Number of nodes: \t" << mesh->nodes.size() << std::endl;
-    std::cout << "Number of elements: \t" << mesh->elements.size() << std::endl;
+    std::cout << "Number of elements: \t" << mesh->elements.size() <<std::endl;
 
     if (writeMesh)
     {
@@ -215,10 +227,26 @@ std::string Part::getName() const
 
 double* Part::getSizes() const
 {
+    if (mSizes == nullptr)
+    {
+        std::string message("Sizes of part <");
+        message += mName;
+        message += "> doens't set!";
+        throw except::Exception(OrpheusConstants::ExceptionType::NOSIZES,
+                                message);
+    }
     return mSizes;
 }
 
 int* Part::getDivisions() const
 {
+    if (mDivisions == nullptr)
+    {
+        std::string message("Divisions of part <");
+        message += mName;
+        message += "> doens't set!";
+        throw except::Exception(OrpheusConstants::ExceptionType::NODIVISIONS,
+                                message);
+    }
     return mDivisions;
 }

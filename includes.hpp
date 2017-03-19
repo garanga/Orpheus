@@ -37,8 +37,12 @@
 #include "ODBFrame.h"
 #include "Outputs.h"
 
+#include "exceptions.h"
+
 #include "Eigen/Dense"
 #include "Eigen/Sparse"
 
+namespace except = OrpheusException;
+namespace enums  = OrpheusConstants;
 
 #endif /* INCLUDES_HPP_ */

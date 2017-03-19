@@ -10,10 +10,16 @@
 #include <map>
 #include <vector>
 
-enum class OutputSymbols;
+namespace OrpheusConstants
+{
+    enum class OutputSymbols;
+}
 
-inline bool operator <  (OutputSymbols&, OutputSymbols&);
-inline bool operator == (OutputSymbols&, OutputSymbols&);
+inline bool operator <  (OrpheusConstants::OutputSymbols& ,
+                         OrpheusConstants::OutputSymbols&);
+
+inline bool operator == (OrpheusConstants::OutputSymbols& ,
+                         OrpheusConstants::OutputSymbols&);
 
 class FieldOutput
 {
@@ -22,13 +28,13 @@ public:
     ~FieldOutput() {}
 
 
-    std::map<OutputSymbols, std::vector<double> > data;
+    std::map<OrpheusConstants::OutputSymbols, std::vector<double> > data;
 };
 
 class ScalarOutput
 {
 public:
-    std::map<OutputSymbols, std::vector<double> > data;
+    std::map<::OrpheusConstants::OutputSymbols, std::vector<double> > data;
 
     explicit ScalarOutput() {}
     ~ScalarOutput() {}

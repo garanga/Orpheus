@@ -6,16 +6,13 @@
  */
 
 #include "DisplacementConstraint.hpp"
-
 #include "includes.hpp"
-
-#include <iostream>
 
 DisplacementConstraint::DisplacementConstraint(std::string myName             ,
                                              std::vector<int> myRegion        ,
-                                             DisplacementConstraintType myType,
+                           OrpheusConstants::DisplacementConstraintType myType,
                                              double* myValue                  )
-	: Constraint(myName, myRegion, myType, myValue)
+    : Constraint(myName, myRegion, myType, myValue)
 {
 
 }

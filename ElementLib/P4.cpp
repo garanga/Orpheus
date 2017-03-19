@@ -61,10 +61,10 @@ P4:: P4(Material* myMaterial, bool isPlainStrain)
 
 P4::~P4()
 {
-    delete[] mAlpha;
-    delete[] mBeta;
-    delete[] mGamma;
-    delete[] mDelta;
+    delete [] mAlpha;
+    delete [] mBeta;
+    delete [] mGamma;
+    delete [] mDelta;
 }
 
 /*!

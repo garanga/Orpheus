@@ -13,15 +13,13 @@
 
 #include "Constraint.hpp"
 
-enum class DisplacementConstraintType;
-
 class DisplacementConstraint : public Constraint
 {
 public:
-    DisplacementConstraint(std::string myName                ,
-                            std::vector<int> myRegion        ,
-                            DisplacementConstraintType myType,
-                            double* myValue                  );
+    DisplacementConstraint(std::string myName                                 ,
+                           std::vector<int> myRegion                          ,
+                           OrpheusConstants::DisplacementConstraintType myType,
+                           double* myValue                                   );
     virtual ~DisplacementConstraint();
 };
 

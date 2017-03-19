@@ -17,23 +17,15 @@ class Isotropic : public Material
 
 public:
 
-	Isotropic(std::string name, double young, double poisson);
-
+    Isotropic(std::string name, double young, double poisson);
    ~Isotropic();
 
-//	std::string
-//	getName() const override;
-
-	double
-	getYoung() const override;
-
-	double
-	getPoisson() const override;
+    double  getYoung() const override;
+    double  getPoisson() const override;
 
 private:
-
-	double      young_;
-	double      poisson_;
+    double      mYoung;
+    double      mPoisson;
 
 };
 

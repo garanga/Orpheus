@@ -41,7 +41,7 @@ void ODBFrame::fileStreamWrite(std::ofstream& fout, int dim)
         fout << scalar_type << "\n";
         switch (scalar_type)
         {
-        case (int)OutputSymbols::T :
+        case (int)OrpheusConstants::OutputSymbols::T :
         {
             for (unsigned int i = 0; i < it->second.size(); ++i)
                 fout << it->second.at(i) << std::endl;
@@ -57,7 +57,7 @@ void ODBFrame::fileStreamWrite(std::ofstream& fout, int dim)
         fout << field_type << "\n";
         switch (field_type)
         {
-        case (int)OutputSymbols::U :
+        case (int)OrpheusConstants::OutputSymbols::U :
         {
             for (unsigned int i = 0; i < it->second.size(); i += dim)
             {
@@ -72,8 +72,8 @@ void ODBFrame::fileStreamWrite(std::ofstream& fout, int dim)
             }
             break;
         }
-        case (int)OutputSymbols::S :
-        case (int)OutputSymbols::E :
+        case (int)OrpheusConstants::OutputSymbols::S :
+        case (int)OrpheusConstants::OutputSymbols::E :
         {
 
             int limit = 1;
@@ -97,7 +97,7 @@ void ODBFrame::fileStreamWrite(std::ofstream& fout, int dim)
         }
     }
 
-    fout << (int)OutputSymbols::OUTPUTEND << std::endl;
+    fout << (int)OrpheusConstants::OutputSymbols::OUTPUTEND << std::endl;
 
 }
 
@@ -110,7 +110,7 @@ void ODBFrame::printData(int dim)
         std::cout << "Data type: " << (int)it->first << std::endl;
         switch ((int)it->first)
         {
-        case (int)OutputSymbols::U :
+        case (int)OrpheusConstants::OutputSymbols::U :
         {
             auto iter  = it->second.begin();
 
@@ -122,7 +122,7 @@ void ODBFrame::printData(int dim)
             }
             break;
         }
-        case (int)OutputSymbols::S :
+        case (int)OrpheusConstants::OutputSymbols::S :
         {
             int limit = 1;
             if (dim == 2)

@@ -11,7 +11,7 @@
 
 
 Material::Material(std::string name) :
-		name_(name)
+        mName(name)
 {
 
 }
@@ -24,5 +24,5 @@ Material::~Material()
 std::string
 Material::getName() const
 {
-	return name_;
+    return mName;
 }

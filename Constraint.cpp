@@ -5,17 +5,17 @@
  *      Author: pavel
  */
 
-#include "Constraint.hpp"
+#include "includes.hpp"
 
-Constraint::Constraint(std::string myName               ,
-                       std::vector<int> myRegion        ,
-                       DisplacementConstraintType myType,
-                       double* myValue                  )
+Constraint::Constraint(std::string myName                      ,
+                       std::vector<int> myRegion               ,
+                       enums::DisplacementConstraintType myType,
+                       double* myValue                         )
 {
-    mName = myName;
-    type = myType;
+    mName  = myName;
+    type   = myType;
     region = myRegion;
-    value = myValue;
+    value  = myValue;
 }
 
 Constraint::Constraint(const Constraint& constraint)
@@ -36,5 +36,4 @@ Constraint::~Constraint()
     if (value != nullptr)
         delete [] value;
 }
-
 

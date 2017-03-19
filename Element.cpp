@@ -27,8 +27,10 @@ Element::~Element()
 {
     if (mConnectivity != nullptr)
         delete [] mConnectivity;
-    if (mType != nullptr)
+    /*
+    if (mType != nullptr) Type deletes in Mesh
         delete mType;
+    */
 }
 
 void Element::setConnect(int* connectivity)

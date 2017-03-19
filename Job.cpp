@@ -42,7 +42,7 @@ void Job::saveODB()
     std::ofstream fout;
     std::string path = mName + "-Output" + ".txt";
 
-    fout.open(path, std::ios::out | std::ios::binary);
+    fout.open(path.c_str(), std::ios::out | std::ios::binary);
     fout.setf(std::ios::scientific | std::ios::showpos);
 
     for (auto it = mPartODBs.begin(); it != mPartODBs.end(); ++it)

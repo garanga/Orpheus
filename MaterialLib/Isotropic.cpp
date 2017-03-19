@@ -11,37 +11,24 @@
 #include <string>
 
 
-//std::string
-//Material::getName() const
-//{
-//	return name_;
-//}
-
 Isotropic::Isotropic(std::string name, double young, double poisson)
-	: Material(name),
-	  young_(young), poisson_(poisson)
+    : Material(name),
+      mYoung(young), mPoisson(poisson)
 {
-	std::cout << "The isotropic material '" << name << "' is created" << std::endl;
+    std::cout << "The isotropic material '" << name << "' is created" << std::endl;
 }
-
 
 Isotropic::~Isotropic()
 {
 
 }
 
-
-
-
-
-double
-Isotropic::getYoung() const
+double Isotropic::getYoung() const
 {
-	return young_;
+    return mYoung;
 }
-
 
 double Isotropic::getPoisson() const
 {
-	return poisson_;
+    return mPoisson;
 }

@@ -6,6 +6,7 @@
  */
 
 #include "Step.hpp"
+#include "includes.hpp"
 
 #include <vector>
 
@@ -20,12 +21,12 @@ Step::~Step()
 
 }
 
-void Step::addOutputRequest(OutputSymbols fieldType)
+void Step::addOutputRequest(enums::OutputSymbols fieldType)
 {
     mOutputRequest.push_back(fieldType);
 }
 
-void Step::addOutputRequest(std::vector<OutputSymbols> fieldTypes)
+void Step::addOutputRequest(std::vector<enums::OutputSymbols> fieldTypes)
 {
     mOutputRequest.insert(mOutputRequest.end(), fieldTypes.begin(),
                               fieldTypes.end());
@@ -36,7 +37,7 @@ std::string Step::getName() const
     return mName;
 }
 
-std::vector<OutputSymbols> Step::getOutputRequest() const
+std::vector<enums::OutputSymbols> Step::getOutputRequest() const
 {
     return mOutputRequest;
 }

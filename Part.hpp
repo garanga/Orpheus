@@ -14,15 +14,13 @@
 
 class Material;
 class ElementType;
-enum class ElementTypeEnum;
 struct Mesh;
 
-//! A test class1
-/*!
- *
- * A more detailed description1 \f$ \frac{1}{2}  \f$
- *
- */
+namespace OrpheusConstants
+{
+    enum class ElementTypeEnum;
+};
+
 
 class Part
 {
@@ -34,7 +32,7 @@ public:
     void setSizes(double* sizes);
     void setDivisions(int* divisions);
     void setMaterial(Material*);
-    void setElementType(ElementTypeEnum, bool = false);
+    void setElementType(OrpheusConstants::ElementTypeEnum, bool = false);
 
     // A method creating a mesh on part
     void CreateMesh(bool = true);

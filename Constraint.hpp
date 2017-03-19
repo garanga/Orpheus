@@ -13,19 +13,26 @@
 #include <vector>
 
 class Job;
-enum class DisplacementConstraintType;
+namespace OrpheusConstants
+{
+    enum class DisplacementConstraintType;
+};
 
 class Constraint
 {
 public:
-    Constraint(std::string myName               , std::vector<int> myRegion,
-               DisplacementConstraintType myType, double* myValue          );
+    Constraint(std::string myName                                 ,
+               std::vector<int> myRegion                          ,
+               OrpheusConstants::DisplacementConstraintType myType,
+               double* myValue                                    );
+
     Constraint(const Constraint&);
+
     virtual ~Constraint();
 
-    DisplacementConstraintType type;
-    std::vector<int>           region;
-    double*                    value; // Array
+    OrpheusConstants::DisplacementConstraintType type;
+    std::vector<int>                             region;
+    double*                                      value; // Array
 
     friend class Job;
 

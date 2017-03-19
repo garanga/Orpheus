@@ -7,12 +7,14 @@
 #include "Outputs.h"
 
 //---Operator overloading for OutputSymbols-----------------------------------
-inline bool operator < (OutputSymbols& lhv, OutputSymbols& rhv)
+inline bool operator < (OrpheusConstants::OutputSymbols& lhv,
+                        OrpheusConstants::OutputSymbols& rhv)
 {
     return (int)lhv < (int)rhv;
 }
 
-inline bool operator == (OutputSymbols& lhv, OutputSymbols& rhv)
+inline bool operator == (OrpheusConstants::OutputSymbols& lhv,
+                         OrpheusConstants::OutputSymbols& rhv)
 {
     return (int)lhv == (int)rhv;
 }

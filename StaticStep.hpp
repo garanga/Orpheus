@@ -18,8 +18,11 @@ class DisplacementConstraint;
 class Load;
 class ConcentratedLoad;
 
-enum class DisplacementConstraintType;
-enum class ConcentratedLoadType;
+namespace OrpheusConstants
+{
+    enum class DisplacementConstraintType;
+    enum class ConcentratedLoadType;
+}
 
 class StaticStep  : public Step
 {
@@ -47,17 +50,17 @@ public:
 
     // A method creating a DisplacementConstraint object
     DisplacementConstraint*
-    CreateDisplacementConstraint(std::string myName               ,
-                                 std::vector<int> myRegion        ,
-                                 DisplacementConstraintType myType,
-                                 double* myValue                  );
+    CreateDisplacementConstraint(std::string                                 ,
+                                 std::vector<int>                            ,
+                                 OrpheusConstants::DisplacementConstraintType,
+                                 double*                                     );
 
     // A method creating a ConcentratedLoad object
     ConcentratedLoad*
-    CreateConcentratedLoad(std::string myName         ,
-                           std::vector<int> myRegion  ,
-                           ConcentratedLoadType myType,
-                           double* myValue            );
+    CreateConcentratedLoad(std::string                           ,
+                           std::vector<int>                      ,
+                           OrpheusConstants::ConcentratedLoadType,
+                           double*                               );
 };
 
 

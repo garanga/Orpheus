@@ -8,32 +8,21 @@
 #ifndef MATERIAL_HPP_
 #define MATERIAL_HPP_
 
-
 #include <string>
-
 
 class Material
 {
-
 public:
 
-	Material(std::string name);
+    Material(std::string name);
+    virtual ~Material();
 
-	virtual
-   ~Material();
-
-	std::string
-	getName() const;
-
-	virtual double
-	getYoung() const = 0;
-
-	virtual double
-	getPoisson() const = 0;
+    std::string    getName() const;
+    virtual double getYoung() const = 0;
+    virtual double getPoisson() const = 0;
 
 protected:
-
-	std::string name_;
+    std::string mName;
 
 };
 

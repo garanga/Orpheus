@@ -11,7 +11,10 @@
 #include <string>
 #include <vector>
 
-enum class OutputSymbols;
+namespace OrpheusConstants
+{
+    enum class OutputSymbols;
+}
 
 class Step
 {
@@ -19,15 +22,15 @@ public:
     Step(std::string);
     virtual ~Step();
 
-    void addOutputRequest(OutputSymbols);
-    void addOutputRequest(std::vector<OutputSymbols>);
+    void addOutputRequest(OrpheusConstants::OutputSymbols);
+    void addOutputRequest(std::vector<OrpheusConstants::OutputSymbols>);
 
     std::string                getName() const;
-    std::vector<OutputSymbols> getOutputRequest() const;
+    std::vector<OrpheusConstants::OutputSymbols> getOutputRequest() const;
 
 private:
     std::string                mName;
-    std::vector<OutputSymbols> mOutputRequest;
+    std::vector<OrpheusConstants::OutputSymbols> mOutputRequest;
 };
 
 

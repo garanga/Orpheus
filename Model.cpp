@@ -19,13 +19,13 @@ Model::Model(std::string name)
 
 Model::~Model()
 {
-    for (auto it = bodies.begin(); it < bodies.end(); ++it)
+    for (auto it = bodies.begin(); it != bodies.end(); ++it)
         delete *it;
-    for (auto it = parts.begin(); it < parts.end(); ++it)
+    for (auto it = parts.begin(); it != parts.end(); ++it)
         delete *it;
-    for (auto it = materials.begin(); it < materials.end(); ++it)
+    for (auto it = materials.begin(); it != materials.end(); ++it)
         delete *it;
-    for (auto it = steps.begin(); it < steps.end(); ++it)
+    for (auto it = steps.begin(); it != steps.end(); ++it)
         delete *it;
 }
 
@@ -79,14 +79,25 @@ void Model::setMaterialToPart(std::string materName, std::string partName)
     bool materCond = materIter == materials.end();
     bool  partCond =  partIter == parts.end();
 
-    if (materCond or partCond)
+    if (materCond)
     {
-        // Exception NOTFOUND
-        std::cout << "material or part not found" << std::endl;
-        return;
+        std::string message("Material with name <");
+        message += materName;
+        message += "> not found";
+        throw except::Exception(OrpheusConstants::ExceptionType::NOMATERIAL,
+                                message);
     }
-    (*partIter)->setMaterial((*materIter));
 
+    if (partCond)
+    {
+        std::string message("Part with name <");
+        message += partName;
+        message += "> not found";
+        throw except::Exception(OrpheusConstants::ExceptionType::NOPART,
+                                message);
+    }
+
+    (*partIter)->setMaterial((*materIter));
 }
 
 std::string Model::getName() const
