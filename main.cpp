@@ -4,6 +4,9 @@
 
 int main()
 {
+
+    std::cout << "This is test" << std::endl;
+
     std::string modelName = "Model_1";
     std::string  partName = "Part_1";
     std::string materName = "Iso_1";
