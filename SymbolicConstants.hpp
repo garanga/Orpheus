@@ -82,5 +82,15 @@ namespace OrpheusConstants
         NOMESH,
         EMPTYMESH
     };
+
+    enum class ModelAtributes
+    {
+        ELASTICITY,
+        HYPERELASTICITY,
+        PLASTICITY,
+        VISCOSITY,
+        FINITE_DEFORMATIONS,
+        CONTACT
+    };
 }
 #endif /* SYMBOLICCONSTANTS_HPP_ */

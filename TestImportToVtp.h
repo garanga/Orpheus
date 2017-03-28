@@ -19,95 +19,6 @@
 void importToVtp(std::string path)
 {
 
-
-
-//    vtkSmartPointer<vtkPoints> points =
-//       vtkSmartPointer<vtkPoints>::New();
-////     points->InsertNextPoint(0, 0, 0);
-////     points->InsertNextPoint(1, 0, 0);
-////     points->InsertNextPoint(1, 1, 0);
-////     points->InsertNextPoint(0, 1, 1);
-//
-//    points->InsertNextPoint(0, 0, 0);
-//    points->InsertNextPoint(1, 0, 0);
-//    points->InsertNextPoint(1, 1, 0);
-//    points->InsertNextPoint(0, 1, 0);
-//
-//
-//
-////      vtkSmartPointer<vtkTetra> tetra =
-////       vtkSmartPointer<vtkTetra>::New();
-////
-////     tetra->GetPointIds()->SetId(0, 0);
-////     tetra->GetPointIds()->SetId(1, 1);
-////     tetra->GetPointIds()->SetId(2, 2);
-////     tetra->GetPointIds()->SetId(3, 3);
-//
-//    vtkSmartPointer<vtkQuad> quad =
-//     vtkSmartPointer<vtkQuad>::New();
-//
-//    quad->GetPointIds()->SetId(0, 0);
-//    quad->GetPointIds()->SetId(1, 1);
-//    quad->GetPointIds()->SetId(2, 2);
-//    quad->GetPointIds()->SetId(3, 3);
-//
-//
-//     vtkSmartPointer<vtkCellArray> cellArray =
-//       vtkSmartPointer<vtkCellArray>::New();
-////     cellArray->InsertNextCell(tetra);
-//     cellArray->InsertNextCell(quad);
-//
-//
-//     vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid =
-//       vtkSmartPointer<vtkUnstructuredGrid>::New();
-//     unstructuredGrid->SetPoints(points);
-////     unstructuredGrid->SetCells(VTK_TETRA, cellArray);
-//     unstructuredGrid->SetCells(VTK_TRIANGLE, cellArray);
-//
-//
-//
-//
-//     // Write file
-//     vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer =
-//       vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
-//     writer->SetFileName("test.vtu");
-//   #if VTK_MAJOR_VERSION <= 5
-//     writer->SetInput(unstructuredGrid);
-//   #else
-//     writer->SetInputData(unstructuredGrid);
-//   #endif
-//     writer->Write();
-//
-//     // Read and display file for verification that it was written correclty
-//     vtkSmartPointer<vtkXMLUnstructuredGridReader> reader =
-//       vtkSmartPointer<vtkXMLUnstructuredGridReader>::New();
-//     reader->SetFileName("test.vtu");
-//     reader->Update();
-//
-//     vtkSmartPointer<vtkDataSetMapper> mapper =
-//       vtkSmartPointer<vtkDataSetMapper>::New();
-//     mapper->SetInputConnection(reader->GetOutputPort());
-//
-//     vtkSmartPointer<vtkActor> actor =
-//       vtkSmartPointer<vtkActor>::New();
-//     actor->SetMapper(mapper);
-//
-//     vtkSmartPointer<vtkRenderer> renderer =
-//       vtkSmartPointer<vtkRenderer>::New();
-//     vtkSmartPointer<vtkRenderWindow> renderWindow =
-//       vtkSmartPointer<vtkRenderWindow>::New();
-//     renderWindow->AddRenderer(renderer);
-//     vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-//       vtkSmartPointer<vtkRenderWindowInteractor>::New();
-//     renderWindowInteractor->SetRenderWindow(renderWindow);
-//
-//     renderer->AddActor(actor);
-//     renderer->SetBackground(.3, .6, .3); // Background color green
-//
-//     renderWindow->Render();
-//     renderWindowInteractor->Start();
-
-
     std::ifstream fin;
     fin.open(path.c_str(), std::ios::in | std::ios::binary);
 
@@ -337,6 +248,33 @@ void importToVtp(std::string path)
     renderWindowInteractor->Start();
 
 }
+
+/* Programable filter
+
+scaleFactor = 1000
+
+input  = self.GetInput ()
+output = self.GetOutput()
+
+pdo.ShallowCopy(pdi)
+
+pointsNum = input.GetNumberOfPoints()
+newPoints = vtk.vtkPoints()
+
+for i in range(0, pointsNum):
+    coord = pdi.GetPoint(i)
+    x, y, z = coord[:3]
+    dx = input.GetPointData().GetArray(0).GetValue(2*i  )
+    dy = inptu.GetPointData().GetArray(0).GetValue(2*i+1)
+    dz = 0
+    x += scaleFactor*dx
+    y += scaleFactor*dy
+    z += scaleFactor*dz
+    newPoints.InsertPoint(i, x, y, z)
+
+pdo.SetPoints(newPoints)
+/*
+ */
 
 
 #endif /* TESTIMPORTTOVTP_H_ */
