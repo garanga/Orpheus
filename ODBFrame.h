@@ -17,7 +17,8 @@ class ODBFrame
 {
 public:
     ODBFrame();
-    ~ODBFrame();
+    ODBFrame(std::ifstream&, int, int, int, int);
+   ~ODBFrame();
 
     void setFieldOutput(FieldOutput&);
 

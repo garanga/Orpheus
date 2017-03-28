@@ -2,10 +2,30 @@
 
 #include <ctime>
 
+#include "TestImportToVtp.h"
+
 int main()
 {
 
-    std::cout << "This is test" << std::endl;
+    /*
+    std::cout << "To use a part with vtk one should do the following: \n"
+              << "1. install vtk \n"
+              << "   (the headers shold be in /usr/local/include/vtk-**)"
+              << "    the shared libs in /usr/local/lib"
+              << "2. add the headers path to Project -> Properties "
+              << "3. add the following libs in Project -> Properties:"
+              << "   vtkCommonCore-7.1"
+              << "   vtkRenderingCore-7.1"
+              << "   vtkCommonDataModel-7.1"
+              << "   vtkCommonExecutionModel-7.1"
+              << "   vtkIOXML-7.1"
+              << "   vtkRenderingOpenGL2-7.1"
+              << "   vtkInteractionStyle-7.1"
+              << "Note, that my vtk version is 7.1"
+              << "4. add LD_LIBRARY_PATH = /usr/local/lib to"
+              << "   Project -> Properies -> Environment"
+              <<std::endl;
+     */
 
     std::string modelName = "Model_1";
     std::string  partName = "Part_1";
@@ -29,8 +49,8 @@ int main()
         sizes[0]     = 10.0;
         sizes[1]     = 10.0;
 
-        divisions[0] =  1;
-        divisions[1] =  1;
+        divisions[0] =  21;
+        divisions[1] =  21;
 
         Part *currentPart = currentModel->getPart(partName);
 
@@ -52,7 +72,7 @@ int main()
         double *constraintValue;
 
         //---Constraint at node 1----------------------------------------------
-        region.push_back(2 -1);
+        region.push_back(22 -1);
 
         constraintValue = new double[2];
         constraintValue[0] = 0.0;
@@ -67,7 +87,7 @@ int main()
         //---------------------------------------------------------------------
 
         //---Constraint at node 3----------------------------------------------
-        region.push_back(2*2 - 1);
+        region.push_back(22*22 - 1);
 
         constraintValue = new double[2];
         constraintValue[0] = 0.0;
@@ -82,7 +102,7 @@ int main()
         //---------------------------------------------------------------------
 
         //---Concentrated force at node 0--------------------------------------
-        region.push_back(0*2);
+        region.push_back(0*22);
 
         constraintValue = new double[2];
         constraintValue[0] = 0.0;
@@ -96,7 +116,7 @@ int main()
         //---------------------------------------------------------------------
 
         //---Concentrated force at node 2--------------------------------------
-        region.push_back(1*2);
+        region.push_back(21*22);
 
         constraintValue = new double[2];
         constraintValue[0] = 0.0;
@@ -149,6 +169,9 @@ int main()
     delete testMdb;
 
     std::cout << "Finish" << std::endl;
+
+    // Test vtk visualization and vtp export
+    importToVtp("Job_1-Output.txt");
 
     return 0;
 }

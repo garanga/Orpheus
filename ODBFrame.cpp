@@ -17,6 +17,65 @@ ODBFrame::~ODBFrame()
 
 }
 
+ODBFrame::ODBFrame(std::ifstream& fin, int dim    , int nodes_per_element,
+                                       int n_nodes, int n_elemens        )
+{
+    int current_symbol;
+
+    while(1)
+    {
+        fin >> current_symbol;
+
+        if (current_symbol == (int)OrpheusConstants::OutputSymbols::OUTPUTEND)
+            break;
+
+        switch(current_symbol)
+        {
+        case (int)OrpheusConstants::OutputSymbols::U :
+        {
+            std::vector<double> data_vector;
+            int cntr = 0;
+            double data;
+            for (int i = 0; i < n_nodes; ++i)
+            {
+                while (cntr < dim)
+                {
+                    fin >> data;
+                    data_vector.push_back(data);
+                    cntr++;
+                }
+                cntr = 0;
+            }
+            mFields.data[OrpheusConstants::OutputSymbols::U] = data_vector;
+            break;
+        }
+        case (int)OrpheusConstants::OutputSymbols::S :
+        {
+            std::vector<double> data_vector;
+            int limit = 1;
+
+            if (dim == 2)
+                limit = 3;
+            else if (dim == 3)
+                limit = 6;
+
+
+            double data;
+            for (int i = 0; i < n_nodes; ++i)
+            {
+                for (int j =0; j < limit; j++)
+                {
+                    fin >> data;
+                    data_vector.push_back(data);
+                }
+            }
+            mFields.data[OrpheusConstants::OutputSymbols::S] = data_vector;
+            break;
+        }
+        }
+    }
+}
+
 void ODBFrame::setFieldOutput(FieldOutput& fields)
 {
     mFields = fields;
